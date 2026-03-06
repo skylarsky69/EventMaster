@@ -17,7 +17,17 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\EventMaster.Core\EventMaster.Core.csproj" />
+    <ProjectReference Include="..\EventMaster.Infrastructure\EventMaster.Infrastructure.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Using Include="Xunit" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Mocks\" />
+    <Folder Include="Services\" />
   </ItemGroup>
 
 </Project>

@@ -6,4 +6,16 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\EventMaster.Core\EventMaster.Core.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Data\" />
+    <Folder Include="Data_Models\" />
+    <Folder Include="Data_Configurations\" />
+    <Folder Include="Data_Seed\" />
+    <Folder Include="Constants\" />
+  </ItemGroup>
+
 </Project>
