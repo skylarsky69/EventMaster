@@ -1,13 +1,15 @@
 using EventMaster.Data;
-using EventMaster.Data.Models; // Това е важно, за да намери ApplicationUser
+using EventMaster.Data.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using System.Threading.Tasks;
 
 namespace EventMaster
 {
     public class Program
     {
-        public static void Main(string[] args)
+        // ПРОМЕНЕНО: void стана async Task
+        public static async Task Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
 
@@ -17,7 +19,7 @@ namespace EventMaster
                 options.UseSqlServer(connectionString));
             builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
-            // ПРОМЕНЕНО: Използваме ApplicationUser, добавяме Роли и изключваме потвърждението на имейл
+            // Използваме ApplicationUser, добавяме Роли и изключваме потвърждението на имейл
             builder.Services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = false)
                 .AddRoles<IdentityRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>();
@@ -43,10 +45,10 @@ namespace EventMaster
 
             app.UseRouting();
 
-            app.UseAuthentication(); // Добавено! Трябва да е преди Authorization
+            app.UseAuthentication();
             app.UseAuthorization();
 
-            // Добавено: Маршрут за административната част (Areas)
+            // Маршрут за административната част (Areas)
             app.MapControllerRoute(
                 name: "areas",
                 pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}");
@@ -57,7 +59,22 @@ namespace EventMaster
 
             app.MapRazorPages();
 
-            app.Run();
+            // --- ДОБАВЕНО ЗА SEEDING ---
+            using (var scope = app.Services.CreateScope())
+            {
+                var services = scope.ServiceProvider;
+                try
+                {
+                    await EventMaster.Data.DbSeeder.SeedRolesAndDataAsync(services);
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine("Грешка при Seeding: " + ex.Message);
+                }
+            }
+            // ---------------------------
+
+            app.Run(); // Оставихме само едно app.Run()
         }
     }
 }
