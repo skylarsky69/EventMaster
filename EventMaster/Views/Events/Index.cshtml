@@ -1,0 +1,41 @@
+﻿@model IEnumerable<EventMaster.Data.Models.Event>
+
+@{
+    ViewData["Title"] = "Всички събития";
+}
+
+<h2 class="text-center mt-4 mb-4">Предстоящи събития</h2>
+
+<div class="row">
+    @if (!Model.Any())
+    {
+        <div class="col-12 text-center mt-5">
+            <h4 class="text-muted">В момента няма добавени събития. Бъдете първите, които ще създадат!</h4>
+            <a asp-action="Create" class="btn btn-success mt-3">Добави събитие</a>
+        </div>
+    }
+    else
+    {
+        @foreach (var item in Model)
+        {
+            <div class="col-md-4 mb-4">
+                <div class="card h-100 shadow-sm">
+                    <img src="@(string.IsNullOrEmpty(item.ImageUrl) ? "https://via.placeholder.com/300x200?text=Event+Image" : item.ImageUrl)" class="card-img-top" alt="@item.Title" style="height: 200px; object-fit: cover;">
+
+                    <div class="card-body">
+                        <h5 class="card-title text-primary">@item.Title</h5>
+                        <h6 class="card-subtitle mb-2 text-muted">@item.Category.Name</h6>
+                        <p class="card-text">@(item.Description.Length > 80 ? item.Description.Substring(0, 80) + "..." : item.Description)</p>
+                    </div>
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item">📍 @item.Venue.Name</li>
+                        <li class="list-group-item">📅 @item.StartDate.ToString("dd.MM.yyyy HH:mm")</li>
+                    </ul>
+                    <div class="card-body text-center">
+                        <a href="#" class="btn btn-outline-primary w-100">Виж повече / Купи билет</a>
+                    </div>
+                </div>
+            </div>
+        }
+    }
+</div>

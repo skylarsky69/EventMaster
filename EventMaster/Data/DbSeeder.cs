@@ -31,6 +31,16 @@ namespace EventMaster.Data
                     new Category { Name = "Фестивал" },
                     new Category { Name = "Семинар" }
                 );
+                // 3. Добавяне на първоначални Места (Venues)
+                if (!dbContext.Venues.Any())
+                {
+                    dbContext.Venues.AddRange(
+                        new Venue { Name = "Зала 1, НДК", Address = "пл. България 1, София", Capacity = 3380 },
+                        new Venue { Name = "Арена София", Address = "бул. Асен Йорданов 1, София", Capacity = 15000 },
+                        new Venue { Name = "Античен театър", Address = "Стария град, Пловдив", Capacity = 3000 }
+                    );
+                    await dbContext.SaveChangesAsync();
+                }
                 await dbContext.SaveChangesAsync();
             }
         }
