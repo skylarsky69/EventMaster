@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace EventMaster.Data
 {
+
     // Указваме, че използваме нашия къстъм ApplicationUser
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {
@@ -18,7 +19,7 @@ namespace EventMaster.Data
         public DbSet<Venue> Venues { get; set; } = null!;
         public DbSet<Ticket> Tickets { get; set; } = null!;
         public DbSet<Order> Orders { get; set; } = null!;
-
+        public DbSet<ContactMessage> ContactMessages { get; set; }
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
