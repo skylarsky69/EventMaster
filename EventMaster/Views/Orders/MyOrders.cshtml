@@ -1,0 +1,48 @@
+﻿@model IEnumerable<EventMaster.Data.Models.Order>
+
+@{
+    ViewData["Title"] = "Моите билети";
+}
+
+<div class="container mt-4">
+    <h2 class="mb-4">🎫 Моите закупени билети</h2>
+
+    <div class="table-responsive">
+        <table class="table table-hover border">
+            <thead class="table-dark">
+                <tr>
+                    <th>Дата на покупка</th>
+                    <th>Събитие</th>
+                    <th>Място</th>
+                    <th>Цена</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (!Model.Any())
+                {
+                    <tr>
+                        <td colspan="4" class="text-center py-4 text-muted">
+                            Все още нямате закупени билети.
+                            <a asp-controller="Events" asp-action="Index">Разгледайте събитията тук.</a>
+                        </td>
+                    </tr>
+                }
+                else
+                {
+                    @foreach (var order in Model)
+                    {
+                        foreach (var ticket in order.Tickets)
+                        {
+                            <tr>
+                                <td>@order.OrderDate.ToString("dd.MM.yyyy HH:mm")</td>
+                                <td class="fw-bold">@ticket.Event.Title</td>
+                                <td>@ticket.Event.Venue.Name</td>
+                                <td>@ticket.Price.ToString("F2") лв.</td>
+                            </tr>
+                        }
+                    }
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

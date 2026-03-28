@@ -8,8 +8,29 @@ namespace EventMaster.Data
         public static async Task SeedRolesAndDataAsync(IServiceProvider serviceProvider)
         {
             var roleManager = serviceProvider.GetRequiredService<RoleManager<IdentityRole>>();
+            var userManager = serviceProvider.GetRequiredService<UserManager<ApplicationUser>>();
             var dbContext = serviceProvider.GetRequiredService<ApplicationDbContext>();
+            // 1.5 Създаване на Администраторски акаунт по подразбиране
+            var adminEmail = "admin@eventmaster.com";
+            var adminUser = await userManager.FindByEmailAsync(adminEmail);
+            if (adminUser == null)
+            {
+                var newAdmin = new ApplicationUser
+                {
+                    UserName = adminEmail,
+                    Email = adminEmail,
+                    FirstName = "Главeн",
+                    LastName = "Администратор",
+                    EmailConfirmed = true
+                };
 
+                // Паролата ще бъде Admin123!
+                var result = await userManager.CreateAsync(newAdmin, "Admin123!");
+                if (result.Succeeded)
+                {
+                    await userManager.AddToRoleAsync(newAdmin, "Administrator");
+                }
+            }
             // 1. Създаване на задължителните роли
             string[] roleNames = { "Administrator", "User" };
             foreach (var roleName in roleNames)

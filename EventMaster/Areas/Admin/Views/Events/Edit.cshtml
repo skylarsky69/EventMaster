@@ -1,21 +1,23 @@
 ﻿@model EventMaster.Data.Models.Event
 
 @{
-    ViewData["Title"] = "Създай събитие";
+    ViewData["Title"] = "Редактирай събитие (Админ)";
 }
 
-<h2 class="text-center mt-4 mb-4">Добави ново събитие</h2>
+<h2 class="text-center mt-4 mb-4 text-warning">Административен панел: Редактирай събитие</h2>
 
 <div class="row justify-content-center">
     <div class="col-md-8">
-        <div class="card shadow">
+        <div class="card shadow border-warning">
             <div class="card-body">
-                <form asp-action="Create">
+                <form asp-action="Edit">
                     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                    <input type="hidden" asp-for="Id" />
 
                     <div class="form-group mb-3">
                         <label asp-for="Title" class="control-label">Заглавие на събитието</label>
-                        <input asp-for="Title" class="form-control" placeholder="Напр. Рок концерт..." />
+                        <input asp-for="Title" class="form-control" />
                         <span asp-validation-for="Title" class="text-danger"></span>
                     </div>
 
@@ -33,7 +35,7 @@
                         </div>
                         <div class="col-md-6 form-group mb-3">
                             <label asp-for="ImageUrl" class="control-label">Линк към снимка (URL)</label>
-                            <input asp-for="ImageUrl" class="form-control" placeholder="https://..." />
+                            <input asp-for="ImageUrl" class="form-control" />
                             <span asp-validation-for="ImageUrl" class="text-danger"></span>
                         </div>
                     </div>
@@ -56,8 +58,8 @@
                     </div>
 
                     <div class="form-group text-center mt-4">
-                        <input type="submit" value="Създай събитие" class="btn btn-success px-5" />
-                        <a asp-action="Index" class="btn btn-secondary px-4 ms-2">Отказ</a>
+                        <input type="submit" value="Запази промените" class="btn btn-warning px-5" />
+                        <a asp-area="" asp-controller="Events" asp-action="Index" class="btn btn-secondary px-4 ms-2">Отказ</a>
                     </div>
                 </form>
             </div>

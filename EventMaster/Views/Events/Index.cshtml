@@ -10,8 +10,7 @@
     @if (!Model.Any())
     {
         <div class="col-12 text-center mt-5">
-            <h4 class="text-muted">В момента няма добавени събития. Бъдете първите, които ще създадат!</h4>
-            <a asp-action="Create" class="btn btn-success mt-3">Добави събитие</a>
+            <h4 class="text-muted">В момента няма добавени събития.</h4>
         </div>
     }
     else
@@ -32,7 +31,7 @@
                         <li class="list-group-item">📅 @item.StartDate.ToString("dd.MM.yyyy HH:mm")</li>
                     </ul>
                     <div class="card-body text-center">
-                        <a href="#" class="btn btn-outline-primary w-100">Виж повече / Купи билет</a>
+                        <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-outline-primary w-100">Виж повече / Купи билет</a>
                     </div>
                 </div>
             </div>
