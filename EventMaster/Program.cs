@@ -1,4 +1,5 @@
 using EventMaster.Data;
+using EventMaster.Data.Models; // Това е важно, за да намери ApplicationUser
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
@@ -16,8 +17,11 @@ namespace EventMaster
                 options.UseSqlServer(connectionString));
             builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
-            builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
+            // ПРОМЕНЕНО: Използваме ApplicationUser, добавяме Роли и изключваме потвърждението на имейл
+            builder.Services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = false)
+                .AddRoles<IdentityRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>();
+
             builder.Services.AddControllersWithViews();
 
             var app = builder.Build();
@@ -39,11 +43,18 @@ namespace EventMaster
 
             app.UseRouting();
 
+            app.UseAuthentication(); // Добавено! Трябва да е преди Authorization
             app.UseAuthorization();
+
+            // Добавено: Маршрут за административната част (Areas)
+            app.MapControllerRoute(
+                name: "areas",
+                pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}");
 
             app.MapControllerRoute(
                 name: "default",
                 pattern: "{controller=Home}/{action=Index}/{id?}");
+
             app.MapRazorPages();
 
             app.Run();
