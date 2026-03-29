@@ -100,6 +100,8 @@ namespace EventMaster.Tests
 
             var controller = new EventsController(db);
 
+
+
             // Act
             var result = await controller.Details(99);
 
@@ -107,6 +109,10 @@ namespace EventMaster.Tests
             var viewResult = Assert.IsType<ViewResult>(result);
             var model = Assert.IsType<Event>(viewResult.ViewData.Model);
             Assert.Equal("Специално събитие", model.Title);
+
+
+
+
         }
     }
 }
