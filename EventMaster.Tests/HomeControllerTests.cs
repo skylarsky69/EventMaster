@@ -2,6 +2,8 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging.Abstractions;
 using Xunit;
+using Microsoft.AspNetCore.Http; 
+using EventMaster.Models;
 
 namespace EventMaster.Tests
 {
@@ -10,43 +12,56 @@ namespace EventMaster.Tests
         [Fact]
         public void Index_ReturnsViewResult()
         {
-            // Arrange (Подготовка: използваме "празен" логър, за да не гърми)
+            
             var logger = NullLogger<HomeController>.Instance;
             var controller = new HomeController(logger);
 
-            // Act (Действие)
+           
             var result = controller.Index();
 
-            // Assert (Проверка)
+           
             Assert.IsType<ViewResult>(result);
         }
 
         [Fact]
         public void About_ReturnsViewResult()
         {
-            // Arrange
+            
             var logger = NullLogger<HomeController>.Instance;
             var controller = new HomeController(logger);
 
-            // Act
+            
             var result = controller.About();
 
-            // Assert
+            
             Assert.IsType<ViewResult>(result);
         }
 
         [Fact]
         public void Privacy_ReturnsViewResult()
         {
-            // Arrange
             var logger = NullLogger<HomeController>.Instance;
             var controller = new HomeController(logger);
 
-            // Act
             var result = controller.Privacy();
 
-            // Assert
             Assert.IsType<ViewResult>(result);
+        }
+        [Fact]
+        public void Error_ReturnsViewResult_WithModel()
+        {
+            var logger = NullLogger<HomeController>.Instance;
+            var controller = new HomeController(logger);
+
+            controller.ControllerContext = new ControllerContext
+            {
+                HttpContext = new DefaultHttpContext()
+            };
+
+            var result = controller.Error();
+
+            var viewResult = Assert.IsType<ViewResult>(result);
+            Assert.IsType<ErrorViewModel>(viewResult.Model);
         }
     }
 }

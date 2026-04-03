@@ -78,5 +78,37 @@ namespace EventMaster.Tests
             // Проверяваме, че НЕ е добавено в базата
             Assert.Empty(db.Categories);
         }
+        [Fact]
+        public async Task Edit_Get_ReturnsNotFound_WhenIdIsNull()
+        {
+            // Arrange
+            var db = GetDatabase();
+            var controller = new CategoriesController(db);
+
+            // Act
+            var result = await controller.Edit(null);
+
+            // Assert
+            Assert.IsType<NotFoundResult>(result);
+        }
+
+        [Fact]
+        public async Task Edit_Get_ReturnsView_WhenIdIsValid()
+        {
+            // Arrange
+            var db = GetDatabase();
+            db.Categories.Add(new Category { Id = 10, Name = "Изкуство" });
+            await db.SaveChangesAsync();
+
+            var controller = new CategoriesController(db);
+
+            // Act
+            var result = await controller.Edit(10);
+
+            // Assert
+            var viewResult = Assert.IsType<ViewResult>(result);
+            var model = Assert.IsType<Category>(viewResult.Model);
+            Assert.Equal("Изкуство", model.Name);
+        }
     }
 }
