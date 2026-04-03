@@ -18,6 +18,12 @@ namespace EventMaster.Controllers
             return View();
         }
 
+        // --- ÒÎÂÀ Å ÍÎÂÈßÒ ÌÅÒÎÄ ÇÀ ÑÒĞÀÍÈÖÀÒÀ "ÇÀ ÍÀÑ" ---
+        public IActionResult About()
+        {
+            return View();
+        }
+
         public IActionResult Privacy()
         {
             return View();
