@@ -1,66 +1,73 @@
 ﻿@model EventMaster.Data.Models.Event
 
 @{
-    ViewData["Title"] = "Добави събитие (Админ)";
+    ViewData["Title"] = "Добави ново събитие";
 }
 
-<h2 class="text-center mt-4 mb-4 text-danger">Административен панел: Добави събитие</h2>
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow-sm border-0 rounded-3">
+                <div class="card-header bg-danger text-white text-center py-3">
+                    <h3 class="mb-0"><i class="bi bi-calendar-plus"></i> Добави ново събитие</h3>
+                </div>
+                <div class="card-body p-4">
+                    <form asp-action="Create" method="post">
+                        <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
 
-<div class="row justify-content-center">
-    <div class="col-md-8">
-        <div class="card shadow border-danger">
-            <div class="card-body">
-                <form asp-action="Create">
-                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-
-                    <div class="form-group mb-3">
-                        <label asp-for="Title" class="control-label">Заглавие на събитието</label>
-                        <input asp-for="Title" class="form-control" />
-                        <span asp-validation-for="Title" class="text-danger"></span>
-                    </div>
-
-                    <div class="form-group mb-3">
-                        <label asp-for="Description" class="control-label">Описание</label>
-                        <textarea asp-for="Description" class="form-control" rows="4"></textarea>
-                        <span asp-validation-for="Description" class="text-danger"></span>
-                    </div>
-
-                    <div class="row">
-                        <div class="col-md-6 form-group mb-3">
-                            <label asp-for="StartDate" class="control-label">Дата и час</label>
-                            <input asp-for="StartDate" class="form-control" type="datetime-local" />
-                            <span asp-validation-for="StartDate" class="text-danger"></span>
+                        <div class="mb-3">
+                            <label asp-for="Title" class="form-label fw-bold">Заглавие</label>
+                            <input asp-for="Title" class="form-control form-control-lg" placeholder="Въведете име на събитието..." />
+                            <span asp-validation-for="Title" class="text-danger"></span>
                         </div>
-                        <div class="col-md-6 form-group mb-3">
-                            <label asp-for="ImageUrl" class="control-label">Линк към снимка (URL)</label>
-                            <input asp-for="ImageUrl" class="form-control" />
-                            <span asp-validation-for="ImageUrl" class="text-danger"></span>
-                        </div>
-                    </div>
 
-                    <div class="row">
-                        <div class="col-md-6 form-group mb-3">
-                            <label asp-for="CategoryId" class="control-label">Категория</label>
-                            <select asp-for="CategoryId" class="form-control" asp-items="ViewBag.Categories">
-                                <option value="">-- Избери категория --</option>
-                            </select>
-                            <span asp-validation-for="CategoryId" class="text-danger"></span>
+                        <div class="mb-3">
+                            <label asp-for="Description" class="form-label fw-bold">Описание</label>
+                            <textarea asp-for="Description" class="form-control" rows="4" placeholder="Кратко описание..."></textarea>
+                            <span asp-validation-for="Description" class="text-danger"></span>
                         </div>
-                        <div class="col-md-6 form-group mb-3">
-                            <label asp-for="VenueId" class="control-label">Място на провеждане</label>
-                            <select asp-for="VenueId" class="form-control" asp-items="ViewBag.Venues">
-                                <option value="">-- Избери място --</option>
-                            </select>
-                            <span asp-validation-for="VenueId" class="text-danger"></span>
-                        </div>
-                    </div>
 
-                    <div class="form-group text-center mt-4">
-                        <input type="submit" value="Създай събитие" class="btn btn-danger px-5" />
-                        <a asp-area="" asp-controller="Events" asp-action="Index" class="btn btn-secondary px-4 ms-2">Отказ</a>
-                    </div>
-                </form>
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label asp-for="StartDate" class="form-label fw-bold">Дата и час</label>
+                                <input asp-for="StartDate" class="form-control" type="datetime-local" />
+                                <span asp-validation-for="StartDate" class="text-danger"></span>
+                            </div>
+                            <div class="col-md-6">
+                                <label asp-for="ImageUrl" class="form-label fw-bold">Линк към снимка (URL)</label>
+                                <input asp-for="ImageUrl" class="form-control" placeholder="https://..." />
+                                <span asp-validation-for="ImageUrl" class="text-danger"></span>
+                            </div>
+                        </div>
+
+                        <div class="row mb-4">
+                            <div class="col-md-6">
+                                <label asp-for="CategoryId" class="form-label fw-bold">Категория</label>
+                                <select asp-for="CategoryId" class="form-select" asp-items="ViewBag.Categories">
+                                    <option value="">-- Избери категория --</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6">
+                                <label asp-for="VenueId" class="form-label fw-bold">Място на провеждане</label>
+                                <select asp-for="VenueId" class="form-select" asp-items="ViewBag.Venues">
+                                    <option value="">-- Избери място --</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                            <a asp-action="Index" class="btn btn-outline-secondary me-md-2">Отмяна</a>
+                            <button type="submit" class="btn btn-danger">Създай събитие</button>
+                        </div>
+                    </form>
+                </div>
             </div>
         </div>
     </div>
 </div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

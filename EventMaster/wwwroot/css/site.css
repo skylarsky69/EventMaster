@@ -1,22 +1,82 @@
-html {
-  font-size: 14px;
-}
-
-@media (min-width: 768px) {
-  html {
-    font-size: 16px;
-  }
-}
-
-.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
-  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
-}
-
-html {
-  position: relative;
-  min-height: 100%;
+:root {
+    --primary-color: #0d6efd;
+    --accent-color: #ff4757;
+    --dark-bg: #1e272e;
 }
 
 body {
-  margin-bottom: 60px;
+    font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    background-color: #f8f9fa;
+    color: #2f3542;
+}
+
+/* Hero Section */
+.hero-section {
+    background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('https://images.unsplash.com/photo-1492684223066-81342ee5ff30?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80');
+    background-size: cover;
+    background-position: center;
+    color: white;
+    padding: 100px 0;
+    margin-bottom: 50px;
+    border-radius: 0 0 50px 50px;
+}
+
+/* Modern Cards */
+.card {
+    border: none;
+    border-radius: 15px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    overflow: hidden;
+}
+
+    .card:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 15px 30px rgba(0,0,0,0.1) !important;
+    }
+
+.btn-primary {
+    border-radius: 10px;
+    padding: 10px 25px;
+    font-weight: 600;
+    transition: 0.3s;
+}
+
+    .btn-primary:hover {
+        background-color: var(--accent-color);
+        border-color: var(--accent-color);
+        transform: scale(1.05);
+    }
+
+/* Navbar Tuning */
+.navbar {
+    padding: 15px 0;
+    transition: all 0.3s;
+}
+
+.nav-link {
+    font-weight: 500;
+    margin: 0 10px;
+}
+/* Правим така, че футърът винаги да е най-долу, без да пречи на съдържанието */
+html {
+    position: relative;
+    min-height: 100%;
+}
+
+body {
+    margin-bottom: 60px; /* Височината на футъра */
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+.container {
+    flex: 1;
+}
+
+footer {
+    width: 100%;
+    background-color: white !important;
+    border-top: 1px solid #dee2e6;
+    z-index: 1000;
 }

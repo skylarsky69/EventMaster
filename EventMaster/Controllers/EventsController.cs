@@ -13,22 +13,38 @@ namespace EventMaster.Controllers
             _context = context;
         }
 
-        public async Task<IActionResult> Index(string searchTerm)
+        // Добавяме параметри searchTerm и page (по подразбиране е 1-ва страница)
+        public async Task<IActionResult> Index(string searchTerm, int page = 1)
         {
-            var eventsQuery = _context.Events
+            int pageSize = 6; // Показваме по 6 събития на страница (можеш да го промениш)
+
+            var events = _context.Events
                 .Include(e => e.Category)
                 .Include(e => e.Venue)
                 .AsQueryable();
 
+            // Логика за търсачката
             if (!string.IsNullOrEmpty(searchTerm))
             {
-                eventsQuery = eventsQuery.Where(e => e.Title.Contains(searchTerm)
-                                                  || e.Description.Contains(searchTerm));
-                ViewBag.CurrentSearch = searchTerm;
+                events = events.Where(e => e.Title.Contains(searchTerm) || e.Description.Contains(searchTerm));
             }
 
-            var events = await eventsQuery.ToListAsync();
-            return View(events);
+            // Логика за странициране
+            int totalEvents = await events.CountAsync();
+            int totalPages = (int)Math.Ceiling(totalEvents / (double)pageSize);
+
+            // Взимаме само събитията за текущата страница
+            var eventsToDisplay = await events
+                .Skip((page - 1) * pageSize)
+                .Take(pageSize)
+                .ToListAsync();
+
+            // Изпращаме данните към изгледа (View) чрез ViewBag
+            ViewBag.CurrentPage = page;
+            ViewBag.TotalPages = totalPages;
+            ViewBag.SearchTerm = searchTerm;
+
+            return View(eventsToDisplay);
         }
 
         public async Task<IActionResult> Details(int? id)

@@ -1,6 +1,49 @@
 ﻿@{
-    ViewData["Title"] = "Privacy Policy";
+    ViewData["Title"] = "Политика за поверителност";
 }
-<h1>@ViewData["Title"]</h1>
 
-<p>Use this page to detail your site's privacy policy.</p>
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="text-center mb-5">
+                <h1 class="display-5 fw-bold text-primary"><i class="bi bi-shield-check"></i> @ViewData["Title"]</h1>
+                <p class="lead text-muted">Последна актуализация: @DateTime.Now.ToString("dd.MM.yyyy") г.</p>
+            </div>
+
+            <div class="card shadow-sm border-0 rounded-4">
+                <div class="card-body p-4 p-md-5">
+
+                    <h4 class="fw-bold text-dark border-bottom pb-2 mb-3">1. Каква информация събираме?</h4>
+                    <p class="text-secondary mb-4">
+                        Ние в <strong>EventMaster</strong> събираме само информацията, която е строго необходима за предоставяне на нашите услуги. Това включва вашето име, имейл адрес и данни за контакт при регистрация или при закупуване на билет за събитие.
+                    </p>
+
+                    <h4 class="fw-bold text-dark border-bottom pb-2 mb-3">2. Как използваме вашите данни?</h4>
+                    <p class="text-secondary mb-2">Вашите лични данни се използват изключително за следните цели:</p>
+                    <ul class="text-secondary mb-4">
+                        <li>Обработка на вашите поръчки и сигурно издаване на електронни билети.</li>
+                        <li>Изпращане на важна информация относно събития, за които сте закупили билети (например промяна на дата, час или място на провеждане).</li>
+                        <li>Подобряване на цялостното потребителско изживяване в нашата платформа.</li>
+                    </ul>
+
+                    <h4 class="fw-bold text-dark border-bottom pb-2 mb-3">3. Защита на данните</h4>
+                    <p class="text-secondary mb-4">
+                        Сигурността на вашата информация е наш абсолютен приоритет. Използваме съвременни методи за криптиране и защита на нашата база данни, за да предотвратим неоторизиран достъп, загуба или злоупотреба с вашите данни.
+                    </p>
+
+                    <h4 class="fw-bold text-dark border-bottom pb-2 mb-3">4. Споделяне с трети страни</h4>
+                    <p class="text-secondary mb-0">
+                        EventMaster <strong>не</strong> продава, не отдава под наем и не споделя вашите лични данни с трети страни за маркетингови цели. Данни могат да бъдат предоставени на органите на реда само при законово изискване.
+                    </p>
+                </div>
+            </div>
+
+            <div class="text-center mt-4">
+                <a asp-controller="Home" asp-action="Index" class="btn btn-outline-primary rounded-pill px-4">
+                    <i class="bi bi-arrow-left me-2"></i> Обратно към Начало
+                </a>
+            </div>
+
+        </div>
+    </div>
+</div>

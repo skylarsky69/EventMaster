@@ -18,7 +18,6 @@ namespace EventMaster.Controllers
             return View();
         }
 
-        // --- “Œ¬¿ ≈ ÕŒ¬»ﬂ“ Ã≈“Œƒ «¿ —“–¿Õ»÷¿“¿ "«¿ Õ¿—" ---
         public IActionResult About()
         {
             return View();
@@ -29,9 +28,19 @@ namespace EventMaster.Controllers
             return View();
         }
 
+        [Route("Home/Error/{statusCode?}")]
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        public IActionResult Error()
+        public IActionResult Error(int? statusCode = null)
         {
+            if (statusCode == 404)
+            {
+                return View("Error404");
+            }
+            else if (statusCode == 500)
+            {
+                return View("Error500");
+            }
+
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
     }

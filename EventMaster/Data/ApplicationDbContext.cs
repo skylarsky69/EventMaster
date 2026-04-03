@@ -4,7 +4,6 @@ using Microsoft.EntityFrameworkCore;
 
 namespace EventMaster.Data
 {
-
     // Указваме, че използваме нашия къстъм ApplicationUser
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {
@@ -20,16 +19,24 @@ namespace EventMaster.Data
         public DbSet<Ticket> Tickets { get; set; } = null!;
         public DbSet<Order> Orders { get; set; } = null!;
         public DbSet<ContactMessage> ContactMessages { get; set; }
+
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
 
-            // Настройка, която предотвратява грешки при изтриване на свързани данни в SQL Server
-            builder.Entity<Ticket>()
-                .HasOne(t => t.Event)
-                .WithMany()
-                .HasForeignKey(t => t.EventId)
-                .OnDelete(DeleteBehavior.Restrict);
+            // Добавяме начални категории с по-големи ID-та
+            builder.Entity<Category>().HasData(
+                new Category { Id = 101, Name = "Музика" },
+                new Category { Id = 102, Name = "Театър" },
+                new Category { Id = 103, Name = "Спорт" },
+                new Category { Id = 104, Name = "Фестивали" }
+            );
+
+            // Добавяме начални места (Venues) с по-големи ID-та
+            builder.Entity<Venue>().HasData(
+                new Venue { Id = 101, Name = "Арена София", Address = "бул. Асен Йорданов 1" },
+                new Venue { Id = 102, Name = "Народен Театър", Address = "ул. Дякон Игнатий 5" }
+            );
         }
     }
 }
