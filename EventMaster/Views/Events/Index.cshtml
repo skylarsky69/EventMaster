@@ -19,10 +19,12 @@
             @foreach (var item in Model)
             {
                 <div class="col">
+
                     <div class="card h-100 shadow-sm border-0">
                         <img src="@item.ImageUrl" class="card-img-top" alt="@item.Title" style="height: 200px; object-fit: cover;">
                         <div class="card-body">
                             <div class="d-flex justify-content-between align-items-center mb-2">
+
                                 <span class="badge bg-primary rounded-pill">@item.Category?.Name</span>
                                 <small class="text-muted"><i class="bi bi-calendar3"></i> @item.StartDate.ToString("dd.MM.yyyy")</small>
                             </div>
