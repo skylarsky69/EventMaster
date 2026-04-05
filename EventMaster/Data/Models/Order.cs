@@ -12,14 +12,12 @@ namespace EventMaster.Data.Models
         [Required]
         public DateTime OrderDate { get; set; }
 
-        // Връзка с потребителя, който прави поръчката
         [Required]
         public string UserId { get; set; } = string.Empty;
 
         [ForeignKey(nameof(UserId))]
         public ApplicationUser User { get; set; } = null!;
 
-        // Билетите, включени в тази поръчка
         public ICollection<Ticket> Tickets { get; set; } = new List<Ticket>();
     }
 }

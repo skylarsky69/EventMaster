@@ -10,7 +10,7 @@ body {
     color: #2f3542;
 }
 
-/* Hero Section */
+
 .hero-section {
     background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('https://images.unsplash.com/photo-1492684223066-81342ee5ff30?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80');
     background-size: cover;
@@ -21,7 +21,7 @@ body {
     border-radius: 0 0 50px 50px;
 }
 
-/* Modern Cards */
+
 .card {
     border: none;
     border-radius: 15px;
@@ -47,7 +47,7 @@ body {
         transform: scale(1.05);
     }
 
-/* Navbar Tuning */
+
 .navbar {
     padding: 15px 0;
     transition: all 0.3s;
@@ -57,14 +57,14 @@ body {
     font-weight: 500;
     margin: 0 10px;
 }
-/* Правим така, че футърът винаги да е най-долу, без да пречи на съдържанието */
+
 html {
     position: relative;
     min-height: 100%;
 }
 
 body {
-    margin-bottom: 60px; /* Височината на футъра */
+    margin-bottom: 60px; 
     display: flex;
     flex-direction: column;
     min-height: 100vh;

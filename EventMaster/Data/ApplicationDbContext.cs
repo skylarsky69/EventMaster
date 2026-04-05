@@ -24,7 +24,6 @@ namespace EventMaster.Data
         {
             base.OnModelCreating(builder);
 
-            // Добавяме начални категории с по-големи ID-та
             builder.Entity<Category>().HasData(
                 new Category { Id = 101, Name = "Музика" },
                 new Category { Id = 102, Name = "Театър" },
@@ -32,7 +31,6 @@ namespace EventMaster.Data
                 new Category { Id = 104, Name = "Фестивали" }
             );
 
-            // Добавяме начални места (Venues) с по-големи ID-та
             builder.Entity<Venue>().HasData(
                 new Venue { Id = 101, Name = "Арена София", Address = "бул. Асен Йорданов 1" },
                 new Venue { Id = 102, Name = "Народен Театър", Address = "ул. Дякон Игнатий 5" }

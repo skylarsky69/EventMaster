@@ -34,7 +34,7 @@ namespace EventMaster.Areas.Admin.Controllers
             return View(category);
         }
 
-        // НОВО: Edit
+        
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null) return NotFound();
@@ -57,7 +57,7 @@ namespace EventMaster.Areas.Admin.Controllers
             return View(category);
         }
 
-        // НОВО: Delete
+        
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null) return NotFound();

@@ -16,7 +16,6 @@ namespace EventMaster.Areas.Admin.Controllers
             _context = context;
         }
 
-        // Списък с всички съобщения
         public async Task<IActionResult> Index()
         {
             var messages = await _context.ContactMessages
@@ -25,7 +24,6 @@ namespace EventMaster.Areas.Admin.Controllers
             return View(messages);
         }
 
-        // Изтриване на съобщение
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Delete(int id)

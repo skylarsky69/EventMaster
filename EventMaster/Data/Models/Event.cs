@@ -24,14 +24,12 @@ namespace EventMaster.Data.Models
         [Url(ErrorMessage = "Моля, въведете валиден линк (URL).")]
         public string ImageUrl { get; set; } = string.Empty;
 
-        // Връзка с Категория
         [Required(ErrorMessage = "Моля, изберете категория.")]
         public int CategoryId { get; set; }
 
         [ForeignKey(nameof(CategoryId))]
         public Category Category { get; set; } = null!;
 
-        // Връзка с Място
         [Required(ErrorMessage = "Моля, изберете място на провеждане.")]
         public int VenueId { get; set; }
 
