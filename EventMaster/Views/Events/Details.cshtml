@@ -1,37 +1,73 @@
 ﻿@model EventMaster.Data.Models.Event
 
-@{
-    ViewData["Title"] = Model.Title;
-}
-
-<div class="container mt-5">
-    <div class="row">
-        <div class="col-md-6 mb-4">
-            <img src="@(string.IsNullOrEmpty(Model.ImageUrl) ? "https://via.placeholder.com/600x400?text=Event+Image" : Model.ImageUrl)"
-                 class="img-fluid rounded shadow" alt="@Model.Title" style="width: 100%; object-fit: cover; max-height: 400px;">
+<div class="event-header-banner" style="background-image: url('@Model.ImageUrl');">
+    <div class="event-header-overlay">
+        <div class="container">
+            <span class="badge bg-danger mb-3 px-3 py-2">@Model.Category?.Name</span>
+            <h1 class="display-3 fw-black" style="font-weight: 900;">@Model.Title</h1>
         </div>
+    </div>
+</div>
 
-        <div class="col-md-6">
-            <h1 class="display-5 fw-bold text-primary">@Model.Title</h1>
-            <div class="d-flex align-items-center mb-3">
-                <span class="badge bg-secondary me-2 fs-6">@Model.Category.Name</span>
-                <span class="text-muted"><i class="bi bi-calendar3"></i> @Model.StartDate.ToString("dd MMMM yyyy, HH:mm ч.")</span>
+<div class="container pb-5">
+    <div class="row">
+        <div class="col-lg-8">
+            <div class="info-box mb-4">
+                <h4 class="fw-bold mb-4">Относно събитието</h4>
+                <p class="text-muted fs-5">@Model.Description</p>
             </div>
 
-            <h4 class="mt-4">Място на провеждане:</h4>
-            <p class="fs-5">
-                📍 <strong>@Model.Venue.Name</strong><br />
-                <small class="text-muted">@Model.Venue.Address</small>
-            </p>
+            <div class="bg-white rounded-4 p-4 shadow-sm">
+                <h4 class="fw-bold mb-4 border-bottom pb-3">Избери тип билет</h4>
 
-            <h4 class="mt-4">За събитието:</h4>
-            <p class="lead" style="white-space: pre-line;">@Model.Description</p>
+                <div class="ticket-row d-flex justify-content-between align-items-center">
+                    <div>
+                        <h5 class="mb-0 fw-bold">STANDARD TICKET</h5>
+                        <small class="text-muted">Достъп до общата зона</small>
+                    </div>
+                    <div class="text-end">
+                        <span class="ticket-price">45.00 BGN</span>
+                        <button class="btn btn-dark ms-3">Add to cart</button>
+                    </div>
+                </div>
 
-            <hr class="my-4">
+                <div class="ticket-row d-flex justify-content-between align-items-center">
+                    <div>
+                        <h5 class="mb-0 fw-bold">VIP EXPERIENCE</h5>
+                        <small class="text-muted">Best view + Welcome drink</small>
+                    </div>
+                    <div class="text-end">
+                        <span class="ticket-price">120.00 BGN</span>
+                        <button class="btn btn-dark ms-3">Add to cart</button>
+                    </div>
+                </div>
+            </div>
+        </div>
 
-            <div class="d-grid gap-2 d-md-block">
-                <button class="btn btn-success btn-lg px-5" type="button">Купи билет</button>
-                <a asp-action="Index" class="btn btn-outline-secondary btn-lg px-4 ms-2">Назад към всички</a>
+        <div class="col-lg-4">
+            <div class="info-box" style="margin-top: -100px;">
+                <div class="mb-4">
+                    <label class="text-muted small text-uppercase fw-bold">Date & Time</label>
+                    <p class="fs-5 fw-bold mb-0">@Model.StartDate.ToString("dd MMMM yyyy")</p>
+                    <p class="text-pink fw-bold">@Model.StartDate.ToString("HH:mm") h.</p>
+                </div>
+
+                <div class="mb-4">
+                    <label class="text-muted small text-uppercase fw-bold">Venue</label>
+                    <p class="fs-5 fw-bold mb-0">@Model.Venue?.Name</p>
+                    <small class="text-muted">@Model.Venue?.Address</small>
+                </div>
+
+                <div class="mb-4">
+                    <label class="text-muted small text-uppercase fw-bold">Availability</label>
+                    <div class="progress mt-2" style="height: 10px;">
+                        <div class="progress-bar bg-danger" style="width: 75%"></div>
+                    </div>
+                    <small class="text-muted">Last tickets available!</small>
+                </div>
+
+                <hr />
+                <button class="btn btn-buy">BUY TICKETS NOW</button>
             </div>
         </div>
     </div>

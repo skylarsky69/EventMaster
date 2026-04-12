@@ -1,48 +1,60 @@
-﻿@{
-    ViewData["Title"] = "Начало";
+﻿@model IEnumerable<EventMaster.Data.Models.Event>
+
+@if (!Model.Any())
+{
+    <div class="container text-center py-5 mt-5">
+        <i class="bi bi-calendar-x text-muted" style="font-size: 5rem;"></i>
+        <h2 class="fw-bold mt-3">Все още няма добавени събития</h2>
+        <p class="text-muted">Моля, влезте в Админ панела и добавете ново събитие, за да се появи тук.</p>
+        @if (User.IsInRole("Administrator"))
+        {
+            <a asp-area="Admin" asp-controller="Events" asp-action="Create" class="btn btn-ticket mt-3">Добави първото събитие</a>
+        }
+    </div>
 }
-
-<section class="hero-section text-center shadow-lg">
-    <div class="container">
-        <h1 class="display-3 fw-bold mb-3">Открий следващото си приключение</h1>
-        <p class="lead mb-5 fs-4">Най-добрите концерти, фестивали и театрални постановки на едно място.</p>
-        <div class="d-grid gap-3 d-sm-flex justify-content-sm-center">
-            <a asp-controller="Events" asp-action="Index" class="btn btn-primary btn-lg px-5 gap-3">Разгледай събитията</a>
-            <a asp-controller="Contact" asp-action="Index" class="btn btn-outline-light btn-lg px-5">Свържи се с нас</a>
-        </div>
-    </div>
-</section>
-
-<div class="container my-5 py-5">
-    <div class="row g-4 text-center">
-        <div class="col-md-4">
-            <div class="p-4 card h-100 shadow-sm">
-                <div class="fs-1 text-primary mb-3"><i class="bi bi-lightning-charge"></i></div>
-                <h3 class="fw-bold">Бърза покупка</h3>
-                <p class="text-muted">Вземи своя билет само с няколко клика, без излишно чакане на опашки.</p>
+else
+{
+    var featured = Model.FirstOrDefault();
+    if (featured != null)
+    {
+        <div class="main-event-hero" style="background-image: url('@featured.ImageUrl');">
+            <div class="hero-overlay">
+                <div class="container">
+                    <span class="badge bg-danger mb-2">FEATURED EVENT</span>
+                    <h1 class="display-2 fw-bold">@featured.Title</h1>
+                    <p class="fs-4">@featured.Venue?.Name | @featured.StartDate.ToString("dd MMM yyyy")</p>
+                    <a asp-controller="Events" asp-action="Details" asp-route-id="@featured.Id" class="btn btn-ticket btn-lg">Get Tickets Now</a>
+                </div>
             </div>
         </div>
-        <div class="col-md-4">
-            <div class="p-4 card h-100 shadow-sm border-primary" style="border-width: 2px;">
-                <div class="fs-1 text-primary mb-3"><i class="bi bi-shield-check"></i></div>
-                <h3 class="fw-bold">Сигурност</h3>
-                <p class="text-muted">Гарантирана защита на твоите данни и 100% валидни билети за всяко събитие.</p>
-            </div>
-        </div>
-        <div class="col-md-4">
-            <div class="p-4 card h-100 shadow-sm">
-                <div class="fs-1 text-primary mb-3"><i class="bi bi-geo-alt"></i></div>
-                <h3 class="fw-bold">Топ локации</h3>
-                <p class="text-muted">Работим с най-големите зали и театри в страната, за да ти осигурим най-доброто.</p>
-            </div>
-        </div>
-    </div>
-</div>
+    }
 
-<div class="container mb-5">
-    <div class="bg-dark text-white rounded-5 p-5 text-center shadow">
-        <h2 class="fw-bold mb-3">Организираш събитие?</h2>
-        <p class="mb-4 opacity-75">Стани част от нашето семейство и достигни до хиляди потребители всеки ден.</p>
-        <a asp-controller="Contact" asp-action="Index" class="btn btn-light rounded-pill px-4">Научи повече</a>
-    </div>
-</div>
+    if (Model.Count() > 1)
+    {
+        <div class="container mt-5">
+            <h2 class="fw-bold mb-4 text-uppercase">Upcoming Events</h2>
+            <div class="row row-cols-1 row-cols-md-3 g-4">
+                @foreach (var item in Model.Skip(1))
+                {
+                    <div class="col">
+                        <div class="event-card h-100 shadow-sm">
+                            <div class="position-relative">
+                                <img src="@item.ImageUrl" class="card-img-top" style="height: 400px; object-fit: cover;" alt="@item.Title">
+                                <div class="event-date-badge">
+                                    @item.StartDate.ToString("MMM")
+                                    <span>@item.StartDate.Day</span>
+                                </div>
+                            </div>
+                            <div class="card-body p-4">
+                                <h5 class="fw-bold fs-4">@item.Title</h5>
+                                <p class="text-muted mb-0"><i class="bi bi-geo-alt-fill text-danger"></i> @item.Venue?.Name</p>
+                                <p class="text-pink fw-bold mt-2">Starting from 35.00 BGN</p>
+                                <a asp-controller="Events" asp-action="Details" asp-route-id="@item.Id" class="btn btn-outline-dark w-100 mt-3 fw-bold">VIEW DETAILS</a>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    }
+}
