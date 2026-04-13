@@ -62,13 +62,56 @@ body {
     margin-top: 10px;
 }
 
-/* Детайли на събитие (Details Page) */
-.event-header-banner {
-    height: 500px;
-    background-size: cover;
-    background-position: center;
+/* --- Заглавен Банер (Детайли) --- */
+.ts-banner-wrapper {
     position: relative;
-    border-radius: 0 0 40px 40px;
+    width: 100%;
+    height: 70vh; /* Заема 70% от височината на екрана */
+    overflow: hidden;
+    margin-top: -1rem; /* Изчиства стандартния маржин от layout-a */
+}
+
+.ts-banner-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Снимката запълва пространството без да се разтяга */
+    object-position: center;
+}
+
+.ts-banner-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    /* Плавен тъмен градиент отдолу нагоре за четливост на заглавието */
+    background: linear-gradient(to top, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0.3) 50%, transparent 100%);
+    display: flex;
+    align-items: flex-end; /* Подрежда заглавието най-отдолу на снимката */
+    padding-bottom: 80px; /* Разстояние за заглавието от дъното */
+    color: white;
+}
+
+.ts-banner-title {
+    font-size: 3.5rem;
+    font-weight: 900;
+    letter-spacing: -2px;
+    text-transform: uppercase;
+    text-shadow: 0 4px 10px rgba(0,0,0,0.5); /* Помага за четливостта */
+}
+
+/* --- Плаваща кутия с информация --- */
+.ts-overlap-container {
+    margin-top: -60px; /* "Плава" върху снимката */
+    position: relative;
+    z-index: 10;
+}
+
+.ts-info-box {
+    background: white;
+    border-radius: 15px;
+    padding: 30px;
+    box-shadow: 0 15px 40px rgba(0,0,0,0.1);
 }
 
 .event-header-overlay {

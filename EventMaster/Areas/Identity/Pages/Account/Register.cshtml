@@ -1,0 +1,50 @@
+﻿@page
+@model RegisterModel
+@{
+    ViewData["Title"] = "Регистрация";
+}
+
+<div class="row justify-content-center mt-5 mb-5 pb-5">
+    <div class="col-md-5">
+        <div class="card shadow-lg border-0 rounded-4 overflow-hidden">
+            <div class="card-header bg-dark text-white text-center py-4">
+                <i class="bi bi-person-plus-fill text-danger" style="font-size: 3rem;"></i>
+                <h2 class="fw-bold mb-0 mt-2 text-uppercase">Нова Регистрация</h2>
+            </div>
+
+            <div class="card-body p-5 bg-light">
+                <form id="registerForm" asp-route-returnUrl="@Model.ReturnUrl" method="post">
+                    <div asp-validation-summary="ModelOnly" class="text-danger mb-3" role="alert"></div>
+
+                    <div class="form-floating mb-4 shadow-sm">
+                        <input asp-for="Input.Email" class="form-control border-0" autocomplete="username" aria-required="true" placeholder="name@example.com" />
+                        <label asp-for="Input.Email" class="text-muted"><i class="bi bi-envelope"></i> Имейл адрес</label>
+                        <span asp-validation-for="Input.Email" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-floating mb-4 shadow-sm">
+                        <input asp-for="Input.Password" class="form-control border-0" autocomplete="new-password" aria-required="true" placeholder="password" />
+                        <label asp-for="Input.Password" class="text-muted"><i class="bi bi-lock"></i> Парола</label>
+                        <span asp-validation-for="Input.Password" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-floating mb-4 shadow-sm">
+                        <input asp-for="Input.ConfirmPassword" class="form-control border-0" autocomplete="new-password" aria-required="true" placeholder="password" />
+                        <label asp-for="Input.ConfirmPassword" class="text-muted"><i class="bi bi-shield-lock"></i> Потвърди паролата</label>
+                        <span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
+                    </div>
+
+                    <button id="registerSubmit" type="submit" class="btn btn-ticket w-100 btn-lg py-3 fw-bold text-uppercase fs-5 shadow">Създай акаунт</button>
+
+                    <div class="mt-4 text-center border-top pt-4">
+                        <p class="text-muted mb-0">Вече имаш акаунт? <a asp-page="./Login" class="text-decoration-none fw-bold text-dark border-bottom border-dark pb-1">Влез оттук</a></p>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

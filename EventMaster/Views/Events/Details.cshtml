@@ -1,73 +1,73 @@
 ﻿@model EventMaster.Data.Models.Event
 
-<div class="event-header-banner" style="background-image: url('@Model.ImageUrl');">
-    <div class="event-header-overlay">
+@{
+    ViewData["Title"] = Model.Title;
+}
+
+<div class="ts-banner-wrapper">
+    <img src="@Model.ImageUrl" class="ts-banner-img" alt="@Model.Title">
+    <div class="ts-banner-overlay">
         <div class="container">
-            <span class="badge bg-danger mb-3 px-3 py-2">@Model.Category?.Name</span>
-            <h1 class="display-3 fw-black" style="font-weight: 900;">@Model.Title</h1>
+            <div class="row">
+                <div class="col-lg-8">
+                    <span class="badge bg-danger mb-3 px-3 py-2 text-uppercase fw-bold">@Model.Category?.Name</span>
+                    <h1 class="ts-banner-title mb-0">@Model.Title</h1>
+                </div>
+            </div>
         </div>
     </div>
 </div>
 
-<div class="container pb-5">
+<div class="container ts-overlap-container pb-5">
     <div class="row">
         <div class="col-lg-8">
-            <div class="info-box mb-4">
-                <h4 class="fw-bold mb-4">Относно събитието</h4>
-                <p class="text-muted fs-5">@Model.Description</p>
-            </div>
-
-            <div class="bg-white rounded-4 p-4 shadow-sm">
-                <h4 class="fw-bold mb-4 border-bottom pb-3">Избери тип билет</h4>
-
-                <div class="ticket-row d-flex justify-content-between align-items-center">
-                    <div>
-                        <h5 class="mb-0 fw-bold">STANDARD TICKET</h5>
-                        <small class="text-muted">Достъп до общата зона</small>
-                    </div>
-                    <div class="text-end">
-                        <span class="ticket-price">45.00 BGN</span>
-                        <button class="btn btn-dark ms-3">Add to cart</button>
-                    </div>
-                </div>
-
-                <div class="ticket-row d-flex justify-content-between align-items-center">
-                    <div>
-                        <h5 class="mb-0 fw-bold">VIP EXPERIENCE</h5>
-                        <small class="text-muted">Best view + Welcome drink</small>
-                    </div>
-                    <div class="text-end">
-                        <span class="ticket-price">120.00 BGN</span>
-                        <button class="btn btn-dark ms-3">Add to cart</button>
-                    </div>
+            <div class="ts-info-box mb-4">
+                <h4 class="fw-bold mb-4 border-bottom pb-2 text-uppercase">Относно</h4>
+                <div class="text-muted fs-5" style="line-height: 1.8;">
+                    @Model.Description
                 </div>
             </div>
         </div>
 
         <div class="col-lg-4">
-            <div class="info-box" style="margin-top: -100px;">
-                <div class="mb-4">
-                    <label class="text-muted small text-uppercase fw-bold">Date & Time</label>
-                    <p class="fs-5 fw-bold mb-0">@Model.StartDate.ToString("dd MMMM yyyy")</p>
-                    <p class="text-pink fw-bold">@Model.StartDate.ToString("HH:mm") h.</p>
+            <div class="ts-info-box">
+                <div class="mb-4 text-center">
+                    <label class="text-muted small text-uppercase fw-bold d-block mb-1">DATE</label>
+                    <p class="fs-4 fw-black mb-0" style="font-weight: 900;">@Model.StartDate.ToString("dd MMMM yyyy")</p>
+                    <p class="text-danger fw-bold fs-5">@Model.StartDate.ToString("HH:mm") h.</p>
                 </div>
 
-                <div class="mb-4">
-                    <label class="text-muted small text-uppercase fw-bold">Venue</label>
+                <div class="mb-4 text-center border-top pt-4">
+                    <label class="text-muted small text-uppercase fw-bold d-block mb-1">VENUE</label>
                     <p class="fs-5 fw-bold mb-0">@Model.Venue?.Name</p>
                     <small class="text-muted">@Model.Venue?.Address</small>
                 </div>
 
-                <div class="mb-4">
-                    <label class="text-muted small text-uppercase fw-bold">Availability</label>
-                    <div class="progress mt-2" style="height: 10px;">
-                        <div class="progress-bar bg-danger" style="width: 75%"></div>
+                <div class="mb-4 border-top pt-4">
+                    <label class="text-muted small text-uppercase fw-bold d-block mb-1">Availability</label>
+                    <div class="progress mt-2" style="height: 12px;">
+                        <div class="progress-bar bg-danger progress-bar-striped progress-bar-animated" style="width: 85%"></div>
                     </div>
-                    <small class="text-muted">Last tickets available!</small>
+                    <small class="text-danger fw-bold">Последни билети!</small>
                 </div>
 
                 <hr />
-                <button class="btn btn-buy">BUY TICKETS NOW</button>
+                <button class="btn btn-ticket btn-lg w-100 py-3 text-uppercase fw-black mb-3" style="font-weight: 900; font-size: 1.2rem;">
+                    Купи Билет
+                </button>
+
+                @if (User.IsInRole("Administrator"))
+                {
+                    <div class="mt-2 border-top pt-3">
+                        <label class="text-muted small text-uppercase fw-bold d-block mb-2 text-center">Админ Панел</label>
+                        <a asp-area="Admin" asp-controller="Events" asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-outline-primary w-100 mb-2 fw-bold">
+                            <i class="bi bi-pencil"></i> Редактирай
+                        </a>
+                        <a asp-area="Admin" asp-controller="Events" asp-action="Delete" asp-route-id="@Model.Id" class="btn btn-outline-danger w-100 fw-bold">
+                            <i class="bi bi-trash"></i> Изтрий
+                        </a>
+                    </div>
+                }
             </div>
         </div>
     </div>

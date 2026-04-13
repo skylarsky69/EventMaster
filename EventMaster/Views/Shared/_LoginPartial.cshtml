@@ -1,27 +1,28 @@
-﻿@using Microsoft.AspNetCore.Identity
-@using EventMaster.Data.Models
-@inject SignInManager<ApplicationUser> SignInManager
-@inject UserManager<ApplicationUser> UserManager
-
-<ul class="navbar-nav">
-@if (SignInManager.IsSignedIn(User))
-{
-    <li class="nav-item">
-        <a  class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Hello @User.Identity?.Name!</a>
-    </li>
-    <li class="nav-item">
-        <form  class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
-            <button  type="submit" class="nav-link btn btn-link text-dark">Logout</button>
-        </form>
-    </li>
-}
-else
-{
-    <li class="nav-item">
-        <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Register">Register</a>
-    </li>
-    <li class="nav-item">
-        <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Login">Login</a>
-    </li>
-}
+﻿<ul class="navbar-nav ms-auto align-items-center">
+    @if (User.Identity != null && User.Identity.IsAuthenticated)
+    {
+        <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle text-white fw-bold" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                <i class="bi bi-person-circle text-danger fs-5 me-1"></i> @User.Identity.Name
+            </a>
+            <ul class="dropdown-menu dropdown-menu-end dropdown-menu-dark shadow-lg rounded-3" aria-labelledby="userDropdown">
+                <li><a class="dropdown-item py-2" asp-area="Identity" asp-page="/Account/Manage/Index"><i class="bi bi-gear"></i> Настройки на профила</a></li>
+                <li><hr class="dropdown-divider"></li>
+                <li>
+                    <form class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
+                        <button type="submit" class="dropdown-item py-2 text-danger fw-bold"><i class="bi bi-box-arrow-right"></i> Изход</button>
+                    </form>
+                </li>
+            </ul>
+        </li>
+    }
+    else
+    {
+        <li class="nav-item me-2 mb-2 mb-lg-0">
+            <a class="nav-link btn btn-outline-light rounded-pill px-4 fw-bold" asp-area="Identity" asp-page="/Account/Register">РЕГИСТРАЦИЯ</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link btn btn-danger rounded-pill px-4 text-white fw-bold" style="background-color: #ff0055; border-color: #ff0055;" asp-area="Identity" asp-page="/Account/Login">ВХОД</a>
+        </li>
+    }
 </ul>

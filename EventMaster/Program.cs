@@ -8,7 +8,7 @@ namespace EventMaster
 {
     public class Program
     {
-        // ПРОМЕНЕНО: void стана async Task
+        // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ: void пїЅпїЅпїЅпїЅпїЅ async Task
         public static async Task Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
@@ -19,7 +19,7 @@ namespace EventMaster
                 options.UseSqlServer(connectionString));
             builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
-            // Използваме ApplicationUser, добавяме Роли и изключваме потвърждението на имейл
+            // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ ApplicationUser, пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅ
             builder.Services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = false)
                 .AddRoles<IdentityRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>();
@@ -49,7 +49,7 @@ namespace EventMaster
             app.UseAuthentication();
             app.UseAuthorization();
 
-            // Маршрут за административната част (Areas)
+            // пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ (Areas)
             app.MapControllerRoute(
                 name: "areas",
                 pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}");
@@ -60,7 +60,7 @@ namespace EventMaster
 
             app.MapRazorPages();
 
-            // --- ДОБАВЕНО ЗА SEEDING ---
+            // --- пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ SEEDING ---
             using (var scope = app.Services.CreateScope())
             {
                 var services = scope.ServiceProvider;
@@ -70,12 +70,12 @@ namespace EventMaster
                 }
                 catch (Exception ex)
                 {
-                    Console.WriteLine("Грешка при Seeding: " + ex.Message);
+                    Console.WriteLine("пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ Seeding: " + ex.Message);
                 }
             }
             // ---------------------------
 
-            app.Run(); // Оставихме само едно app.Run()
+            app.Run(); // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ app.Run()
         }
     }
 }
