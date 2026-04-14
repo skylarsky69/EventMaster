@@ -221,3 +221,87 @@ header {
     .btn-ticket i {
         color: #ffffff !important;
     }
+/* ==========================================
+   СТИЛОВЕ ЗА IDENTITY (НАСТРОЙКИ НА ПРОФИЛА)
+   ========================================== */
+
+/* Активен таб в лявото меню */
+.nav-pills .nav-link.active,
+.nav-pills .show > .nav-link {
+    background-color: #ff0055 !important;
+    color: #ffffff !important;
+    border-radius: 8px;
+    font-weight: bold;
+    box-shadow: 0 4px 10px rgba(255, 0, 85, 0.3);
+}
+
+/* Неактивни табове */
+.nav-pills .nav-link {
+    color: #1a1a1a !important; /* Тъмно сиво/черно */
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+    .nav-pills .nav-link:hover {
+        color: #ff0055 !important;
+        background-color: #f8f9fa;
+    }
+
+/* Оправяне на сините бутони (Save, Update и т.н.) */
+.btn-primary {
+    background-color: #ff0055 !important;
+    border-color: #ff0055 !important;
+    color: #ffffff !important;
+    font-weight: bold !important;
+    text-transform: uppercase;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(255, 0, 85, 0.2);
+    transition: all 0.2s ease-in-out;
+}
+
+    .btn-primary:hover {
+        background-color: #d40047 !important;
+        border-color: #d40047 !important;
+        transform: translateY(-2px);
+    }
+/* Правим бутоните за отказ по-стилни */
+.btn-outline-secondary {
+    border-width: 2px;
+    color: #6c757d !important;
+}
+
+    .btn-outline-secondary:hover {
+        background-color: #6c757d;
+        color: white !important;
+    }
+
+/* Стил за главния бутон, за да е винаги с бял текст */
+.btn-ticket {
+    color: white !important;
+}
+
+
+
+
+
+
+
+/* Гарантираме, че текстът на главните бутони е винаги бял и четлив */
+.btn-ticket {
+    background-color: #ff0055 !important; /* Нашият червен/розов цвят */
+    border-color: #ff0055 !important;
+    color: #ffffff !important; /* Бял текст */
+    transition: all 0.3s ease;
+}
+
+    .btn-ticket:hover {
+        background-color: #d40047 !important;
+        color: #ffffff !important;
+        transform: scale(1.02);
+    }
+
+    .btn-ticket:disabled {
+        background-color: #cccccc !important;
+        border-color: #bbbbbb !important;
+        color: #666666 !important;
+    }
