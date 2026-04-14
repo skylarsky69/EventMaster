@@ -1,0 +1,17 @@
+﻿@{
+    ViewData["Title"] = "Сървърна грешка";
+}
+
+<div class="container text-center mt-5 pt-5 pb-5">
+    <div class="mb-4">
+        <h1 class="display-1 fw-black text-warning" style="font-size: 10rem; font-weight: 900; text-shadow: 0 0 30px rgba(255,193,7,0.6);">500</h1>
+    </div>
+    <h2 class="text-white fw-bold text-uppercase mb-3">Нещо се счупи при нас!</h2>
+    <p class="text-muted fs-5 mb-5 mx-auto" style="max-width: 600px;">
+        Нашите сървъри прегряха от твърде много желаещи за билети. Работим по отстраняването на проблема! Моля, опитайте отново след малко.
+    </p>
+
+    <a asp-controller="Home" asp-action="Index" class="btn btn-outline-light btn-lg px-5 py-3 text-uppercase fw-bold rounded-pill">
+        <i class="bi bi-arrow-clockwise me-2"></i> Опитай отново
+    </a>
+</div>
