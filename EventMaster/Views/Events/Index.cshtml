@@ -4,39 +4,113 @@
     ViewData["Title"] = "Всички събития";
 }
 
-<h2 class="text-center mt-4 mb-4">Предстоящи събития</h2>
+<div class="container mt-5 pt-4 pb-5">
+    <h2 class="fw-black text-dark mb-5 text-uppercase border-bottom border-secondary pb-3">
+        <i class="bi bi-calendar-week text-danger me-2"></i> Всички Събития
+    </h2>
 
-<div class="row">
     @if (!Model.Any())
     {
-        <div class="col-12 text-center mt-5">
-            <h4 class="text-muted">В момента няма добавени събития.</h4>
+        <div class="text-center py-5 my-5 bg-light rounded-4 shadow-sm border">
+            <i class="bi bi-calendar-x text-muted" style="font-size: 5rem;"></i>
+            <h3 class="fw-bold text-dark mt-3">Няма намерени събития</h3>
+            <p class="text-muted fs-5">Опитайте с друго търсене или проверете по-късно.</p>
         </div>
     }
     else
     {
-        <div class="row row-cols-1 row-cols-md-3 g-4">
+        <div class="row row-cols-1 row-cols-md-3 g-4 pb-5">
             @foreach (var item in Model)
             {
                 <div class="col">
+                    <div class="card h-100 shadow border-0 rounded-4 overflow-hidden position-relative transition-all event-card">
 
-                    <div class="card h-100 shadow-sm border-0">
-                        <img src="@item.ImageUrl" class="card-img-top" alt="@item.Title" style="height: 200px; object-fit: cover;">
-                        <div class="card-body">
-                            <div class="d-flex justify-content-between align-items-center mb-2">
+                        <img src="@item.ImageUrl" class="card-img-top" alt="@item.Title" style="height: 220px; object-fit: cover;">
 
-                                <span class="badge bg-primary rounded-pill">@item.Category?.Name</span>
-                                <small class="text-muted"><i class="bi bi-calendar3"></i> @item.StartDate.ToString("dd.MM.yyyy")</small>
-                            </div>
-                            <h5 class="card-title fw-bold">@item.Title</h5>
-                            <p class="card-text text-muted small">@item.Description.Substring(0, Math.Min(item.Description.Length, 100))...</p>
+                        <div class="position-absolute top-0 end-0 bg-danger text-white text-center rounded-bottom-3 me-3 p-2 shadow-lg" style="min-width: 65px;">
+                            <span class="d-block fw-bold fs-4 mb-0" style="line-height: 1;">@item.StartDate.Day</span>
+                            <span class="d-block small text-uppercase fw-bold">@item.StartDate.ToString("MMM")</span>
                         </div>
-                        <div class="card-footer bg-transparent border-0 pb-3">
-                            <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-outline-primary w-100 rounded-pill">Виж детайли</a>
+
+                        <div class="card-body p-4 bg-white">
+                            <span class="badge bg-dark text-uppercase px-3 py-2 mb-3 shadow-sm">@item.Category?.Name</span>
+
+                            <h4 class="fw-black text-dark text-uppercase mb-2">@item.Title</h4>
+
+                            <p class="card-text text-muted small mb-4">
+                                @if (!string.IsNullOrEmpty(item.Description) && item.Description.Length > 80)
+                                {
+                                    @item.Description.Substring(0, 80)
+                                    @:...
+                                }
+                                else
+                                {
+                                    @item.Description
+                                }
+                            </p>
+
+                            <div class="d-flex align-items-center">
+                                <i class="bi bi-tag-fill text-danger me-2"></i>
+                                <span class="fw-bold fs-5" style="color: #ff0055;">От 25.00 &euro;</span>
+                            </div>
+                        </div>
+
+                        <div class="card-footer bg-white border-0 p-4 pt-0 mt-auto">
+                            <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-outline-dark w-100 fw-bold text-uppercase rounded-pill border-2 py-2">
+                                ВИЖ ДЕТАЙЛИ
+                            </a>
                         </div>
                     </div>
                 </div>
             }
         </div>
+
+        @if (ViewBag.TotalPages != null && ViewBag.TotalPages > 1)
+        {
+            <nav aria-label="Page navigation" class="mt-2 pt-4 border-top border-secondary">
+                <ul class="pagination justify-content-center pagination-lg">
+
+                    <li class="page-item @(ViewBag.CurrentPage == 1 ? "disabled" : "")">
+                        <a class="page-link text-dark fw-bold shadow-sm" asp-action="Index"
+                           asp-route-searchTerm="@ViewBag.SearchTerm"
+                           asp-route-page="@(ViewBag.CurrentPage - 1)">
+                            <i class="bi bi-chevron-left me-1"></i> Предишна
+                        </a>
+                    </li>
+
+                    @for (int i = 1; i <= ViewBag.TotalPages; i++)
+                    {
+                        <li class="page-item @(i == ViewBag.CurrentPage ? "active" : "")">
+                            <a class="page-link fw-bold shadow-sm @(i == ViewBag.CurrentPage ? "bg-danger border-danger text-white" : "text-dark")"
+                               asp-action="Index"
+                               asp-route-searchTerm="@ViewBag.SearchTerm"
+                               asp-route-page="@i">
+                                @i
+                            </a>
+                        </li>
+                    }
+
+                    <li class="page-item @(ViewBag.CurrentPage == ViewBag.TotalPages ? "disabled" : "")">
+                        <a class="page-link text-dark fw-bold shadow-sm" asp-action="Index"
+                           asp-route-searchTerm="@ViewBag.SearchTerm"
+                           asp-route-page="@(ViewBag.CurrentPage + 1)">
+                            Следваща <i class="bi bi-chevron-right ms-1"></i>
+                        </a>
+                    </li>
+
+                </ul>
+            </nav>
+        }
     }
 </div>
+
+<style>
+    .event-card {
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+        .event-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.15) !important;
+        }
+</style>

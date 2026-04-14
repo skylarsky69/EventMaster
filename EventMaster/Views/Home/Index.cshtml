@@ -1,61 +1,139 @@
 ﻿@model IEnumerable<EventMaster.Data.Models.Event>
 
-@if (!Model.Any())
-{
-    <div class="container text-center py-5 mt-5">
-        <i class="bi bi-calendar-x text-muted" style="font-size: 5rem;"></i>
-        <h2 class="fw-bold mt-3 text-dark">Все още няма добавени събития</h2>
-        <p class="text-muted">Моля, влезте в Админ панела и добавете ново събитие, за да се появи тук.</p>
-        @if (User.IsInRole("Administrator"))
-        {
-            <a asp-area="Admin" asp-controller="Events" asp-action="Create" class="btn btn-ticket mt-3 text-white fw-bold">Добави първото събитие</a>
-        }
-    </div>
+@{
+    ViewData["Title"] = "Начало";
 }
-else
-{
-    var featured = Model.FirstOrDefault();
-    if (featured != null)
-    {
-        <div class="main-event-hero" style="background-image: url('@featured.ImageUrl');">
-            <div class="hero-overlay">
-                <div class="container">
-                    <span class="badge bg-danger mb-2">FEATURED EVENT</span>
-                    <h1 class="display-2 fw-bold text-white">@featured.Title</h1>
-                    <p class="fs-4 text-white">@featured.Venue?.Name | @featured.StartDate.ToString("dd MMM yyyy")</p>
 
-                    <a asp-controller="Events" asp-action="Details" asp-route-id="@featured.Id" class="btn btn-ticket btn-lg text-white fw-bold">Get Tickets Now</a>
-                </div>
+<div class="hero-section text-center text-white d-flex align-items-center justify-content-center" style="background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.8)), url('https://images.unsplash.com/photo-1459749411175-04bf5292ceea?q=80&w=2000&auto=format&fit=crop') center/cover no-repeat; height: 75vh; margin-top: -1rem; margin-left: -12px; margin-right: -12px;">
+    <div class="container px-4">
+        <h1 class="display-3 fw-black text-uppercase mb-3" style="letter-spacing: 2px;">Открий следващото си <span class="text-danger">Епично</span> преживяване</h1>
+        <p class="lead mb-5 fs-4 text-light w-75 mx-auto">Резервирай билети за най-добрите концерти, спортни събития и театрални постановки в страната. Бързо, лесно и 100% сигурно.</p>
+        <a asp-controller="Events" asp-action="Index" class="btn btn-ticket btn-lg rounded-pill px-5 py-3 fw-bold text-uppercase shadow-lg fs-5">
+            Виж всички събития <i class="bi bi-arrow-right ms-2"></i>
+        </a>
+    </div>
+</div>
+
+<div class="container mt-5 pt-5">
+    <div class="row text-center g-4">
+        <div class="col-md-4">
+            <div class="p-4 bg-light rounded-4 shadow-sm h-100 border-0 feature-card">
+                <i class="bi bi-lightning-charge-fill text-danger mb-3" style="font-size: 3rem;"></i>
+                <h4 class="fw-bold text-dark">Мигновени Билети</h4>
+                <p class="text-muted">Получаваш своя дигитален QR билет в портфейла веднага след плащане. Без чакане на опашки.</p>
             </div>
         </div>
-    }
+        <div class="col-md-4">
+            <div class="p-4 bg-dark text-white rounded-4 shadow-lg h-100 border-0 feature-card" style="transform: scale(1.05); z-index: 1;">
+                <i class="bi bi-shield-lock-fill text-danger mb-3" style="font-size: 3rem;"></i>
+                <h4 class="fw-bold">100% Сигурност</h4>
+                <p class="text-light">Гарантирана защита на твоите плащания и лични данни с най-висок клас криптиране.</p>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="p-4 bg-light rounded-4 shadow-sm h-100 border-0 feature-card">
+                <i class="bi bi-star-fill text-danger mb-3" style="font-size: 3rem;"></i>
+                <h4 class="fw-bold text-dark">Премиум Събития</h4>
+                <p class="text-muted">Достъп до ексклузивни места и VIP пакети за най-търсените събития в Европа.</p>
+            </div>
+        </div>
+    </div>
+</div>
 
-    if (Model.Count() > 1)
-    {
-        <div class="container mt-5">
-            <h2 class="fw-bold mb-4 text-uppercase text-dark">Upcoming Events</h2>
-            <div class="row row-cols-1 row-cols-md-3 g-4 pb-5">
-                @foreach (var item in Model.Skip(1))
-                {
-                    <div class="col">
-                        <div class="event-card h-100 shadow-sm">
-                            <div class="position-relative">
-                                <img src="@item.ImageUrl" class="card-img-top" style="height: 400px; object-fit: cover;" alt="@item.Title">
-                                <div class="event-date-badge">
-                                    @item.StartDate.ToString("MMM")
-                                    <span>@item.StartDate.Day</span>
-                                </div>
+<div class="container mt-5 pt-5 pb-4">
+    <div class="d-flex justify-content-between align-items-end mb-4 border-bottom border-secondary pb-3">
+        <h2 class="fw-black text-dark text-uppercase mb-0">
+            <i class="bi bi-fire text-danger me-2"></i> Топ Събития
+        </h2>
+        <a asp-controller="Events" asp-action="Index" class="text-danger fw-bold text-decoration-none fs-5">Виж всички <i class="bi bi-arrow-right"></i></a>
+    </div>
+
+    <div class="row row-cols-1 row-cols-md-3 g-4">
+        @if (Model != null && Model.Any())
+        {
+            // Взимаме само първите 3 събития за началната страница
+            @foreach (var item in Model.Take(3))
+            {
+                <div class="col">
+                    <div class="card h-100 shadow border-0 rounded-4 overflow-hidden position-relative transition-all event-card">
+                        <img src="@item.ImageUrl" class="card-img-top" alt="@item.Title" style="height: 250px; object-fit: cover;">
+
+                        <div class="position-absolute top-0 end-0 bg-danger text-white text-center rounded-bottom-3 me-3 p-2 shadow-lg" style="min-width: 65px;">
+                            <span class="d-block fw-bold fs-4 mb-0" style="line-height: 1;">@item.StartDate.Day</span>
+                            <span class="d-block small text-uppercase fw-bold">@item.StartDate.ToString("MMM")</span>
+                        </div>
+
+                        <div class="card-body p-4 bg-white">
+                            <span class="badge bg-dark text-uppercase px-3 py-2 mb-3 shadow-sm">@item.Category?.Name</span>
+                            <h4 class="fw-black text-dark text-uppercase mb-3">@item.Title</h4>
+
+                            <div class="d-flex align-items-center mb-2">
+                                <i class="bi bi-geo-alt-fill text-danger me-2"></i>
+                                <span class="text-muted small fw-bold">@(item.Venue?.Name ?? "Очаквайте локация")</span>
                             </div>
-                            <div class="card-body p-4 bg-white">
-                                <h5 class="fw-bold fs-4 text-dark">@item.Title</h5>
-                                <p class="text-muted mb-0"><i class="bi bi-geo-alt-fill text-danger"></i> @item.Venue?.Name</p>
-                                <p class="fw-bold mt-2" style="color: #ff0055;">Starting from 35.00 BGN</p>
-                                <a asp-controller="Events" asp-action="Details" asp-route-id="@item.Id" class="btn btn-outline-dark w-100 mt-3 fw-bold">VIEW DETAILS</a>
+                            <div class="d-flex align-items-center mt-3">
+                                <i class="bi bi-tag-fill text-danger me-2"></i>
+                                <span class="fw-bold fs-5" style="color: #ff0055;">От 25.00 &euro;</span>
                             </div>
                         </div>
+
+                        <div class="card-footer bg-white border-0 p-4 pt-0 mt-auto">
+                            <a asp-action="Details" asp-controller="Events" asp-route-id="@item.Id" class="btn btn-outline-dark w-100 fw-bold text-uppercase rounded-pill border-2 py-2">
+                                Виж Детайли
+                            </a>
+                        </div>
                     </div>
-                }
+                </div>
+            }
+        }
+        else
+        {
+            <div class="col-12 text-center py-5">
+                <p class="text-muted fs-5">Очаквайте скоро нови събития!</p>
             </div>
-        </div>
+        }
+    </div>
+</div>
+
+<div class="bg-danger text-white mt-5 py-5 text-center" style="margin-left: -12px; margin-right: -12px;">
+    <div class="container py-4">
+        <h2 class="fw-black text-uppercase mb-3">Не изпускай нито едно събитие!</h2>
+        <p class="fs-5 mb-4 text-light">Абонирай се за нашия бюлетин и получавай първи информация за нови концерти и ексклузивни отстъпки.</p>
+        <form class="d-flex justify-content-center mx-auto" style="max-width: 500px;">
+            <input type="email" class="form-control form-control-lg rounded-start-pill border-0 px-4" placeholder="Твоят имейл адрес..." required>
+            <button class="btn btn-dark btn-lg rounded-end-pill px-4 fw-bold text-uppercase" type="submit">Абонирам се</button>
+        </form>
+    </div>
+</div>
+
+<style>
+    .feature-card {
+        transition: transform 0.3s ease;
     }
-}
+
+        .feature-card:hover {
+            transform: translateY(-10px) !important;
+        }
+
+    .event-card {
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+        .event-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.15) !important;
+        }
+
+    .btn-ticket {
+        background-color: #ff0055 !important;
+        border-color: #ff0055 !important;
+        color: white !important;
+        transition: all 0.3s ease;
+    }
+
+        .btn-ticket:hover {
+            background-color: #d40047 !important;
+            color: white !important;
+            transform: scale(1.05);
+        }
+</style>

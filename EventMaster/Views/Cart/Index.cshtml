@@ -3,7 +3,7 @@
 }
 
 <div class="container mt-5 pt-4 pb-5 text-center">
-    <h1 class="fw-black text-white mb-5 text-uppercase" style="letter-spacing: 2px;">
+    <h1 class="fw-black text-dark mb-5 text-uppercase" style="letter-spacing: 2px;">
         <i class="bi bi-cart3 text-danger me-2"></i> Твоята Количка
     </h1>
 
@@ -20,15 +20,24 @@
                 <p class="text-white fs-5 fw-bold mb-3">#@ViewBag.EventId</p>
 
                 <p class="text-muted text-uppercase small fw-bold mb-1">Твоите Места</p>
-                <div class="d-flex flex-wrap gap-2">
+                <div class="d-flex flex-wrap gap-2 mb-3">
                     @foreach (var seat in ViewBag.SelectedSeats.Split(", "))
                     {
                         <span class="badge bg-danger fs-6 py-2 px-3">@seat</span>
                     }
                 </div>
+
+                <hr class="border-secondary" />
+                <div class="d-flex justify-content-between align-items-center mt-3">
+                    <span class="text-muted text-uppercase small fw-bold">Обща сума:</span>
+                    <span class="text-danger fw-black fs-4">@(ViewBag.SelectedSeats.Split(", ").Length * 25) &euro;</span>
+                </div>
             </div>
 
             <form asp-controller="Cart" asp-action="Pay" method="post" class="mt-4">
+                <input type="hidden" name="eventId" value="@ViewBag.EventId" />
+                <input type="hidden" name="selectedSeats" value="@ViewBag.SelectedSeats" />
+
                 <button type="submit" class="btn btn-success btn-lg fw-black w-100 py-3 text-uppercase shadow-sm" style="font-size: 1.2rem;">
                     Плати сега <i class="bi bi-credit-card ms-2"></i>
                 </button>
@@ -39,9 +48,9 @@
     {
         <div class="py-5">
             <i class="bi bi-cart-x text-muted" style="font-size: 5rem;"></i>
-            <h3 class="text-white mt-4 fw-bold">Количката е празна</h3>
+            <h3 class="text-dark mt-4 fw-bold">Количката е празна</h3>
             <p class="text-muted fs-5 mb-4">Все още не си избрал места за нито едно събитие.</p>
-            <a asp-controller="Events" asp-action="Index" class="btn btn-outline-light btn-lg rounded-pill px-5 fw-bold">
+            <a asp-controller="Events" asp-action="Index" class="btn btn-ticket btn-lg rounded-pill px-5 fw-bold text-white">
                 Разгледай Събитията
             </a>
         </div>

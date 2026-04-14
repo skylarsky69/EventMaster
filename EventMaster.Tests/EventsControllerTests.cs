@@ -3,116 +3,143 @@ using EventMaster.Data;
 using EventMaster.Data.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 using Xunit;
 
 namespace EventMaster.Tests
 {
-    public class EventsControllerTests
+    public class EventsControllerTests : IDisposable
     {
-        private ApplicationDbContext GetDatabase()
+        private ApplicationDbContext _context;
+        private EventsController _controller;
+
+        public EventsControllerTests()
         {
             var options = new DbContextOptionsBuilder<ApplicationDbContext>()
                 .UseInMemoryDatabase(databaseName: Guid.NewGuid().ToString())
                 .Options;
-            return new ApplicationDbContext(options);
+
+            _context = new ApplicationDbContext(options);
+
+            // 1. Създаваме виртуална Категория и Място
+            var testCategory = new Category { Id = 1, Name = "Тест Категория" };
+            var testVenue = new Venue { Id = 1, Name = "Тест Зала", Address = "София", Capacity = 100 };
+
+            _context.Categories.Add(testCategory);
+            _context.Venues.Add(testVenue);
+
+            // 2. Добавяме 8 събития, за да тестваме търсачката и страницирането
+            for (int i = 1; i <= 8; i++)
+            {
+                _context.Events.Add(new Event
+                {
+                    Id = i,
+                    // Четните ще са Рок, нечетните - Джаз
+                    Title = i % 2 == 0 ? $"Рок Концерт {i}" : $"Джаз Вечер {i}",
+                    // Първото събитие ще има специално описание
+                    Description = i == 1 ? "Специално събитие в София" : "Стандартно описание",
+                    StartDate = DateTime.Now.AddDays(i),
+                    ImageUrl = "test.jpg",
+                    CategoryId = 1,
+                    Category = testCategory,
+                    VenueId = 1,
+                    Venue = testVenue
+                });
+            }
+
+            _context.SaveChanges();
+            _controller = new EventsController(_context);
         }
 
-        [Fact]
-        public async Task Index_ReturnsAllEvents_WhenSearchTermIsEmpty()
+        public void Dispose()
         {
-            // 1. Arrange
-            var db = GetDatabase();
-
-            // Първо добавяме Категория и Място, защото са задължителни (Required)
-            var category = new Category { Id = 1, Name = "Тест Категория" };
-            var venue = new Venue { Id = 1, Name = "Тест Място", Address = "Адрес" };
-            db.Categories.Add(category);
-            db.Venues.Add(venue);
-
-            db.Events.Add(new Event { Title = "Парти", Description = "Описание", StartDate = DateTime.Now.AddDays(1), ImageUrl = "test.jpg", CategoryId = 1, VenueId = 1 });
-            db.Events.Add(new Event { Title = "Концерт", Description = "Описание", StartDate = DateTime.Now.AddDays(2), ImageUrl = "test.jpg", CategoryId = 1, VenueId = 1 });
-            await db.SaveChangesAsync();
-
-            var controller = new EventsController(db);
-
-            // 2. Act
-            var result = await controller.Index(null);
-
-            // 3. Assert
-            var viewResult = Assert.IsType<ViewResult>(result);
-            var model = Assert.IsAssignableFrom<IEnumerable<Event>>(viewResult.ViewData.Model);
-            Assert.Equal(2, model.Count());
+            _context.Database.EnsureDeleted();
+            _context.Dispose();
         }
 
-        [Fact]
-        public async Task Index_FiltersEvents_BySearchTerm()
-        {
-            // 1. Arrange
-            var db = GetDatabase();
+        // ==========================================
+        // ТЕСТОВЕ ЗА DETAILS (Детайли на събитие)
+        // ==========================================
 
-            var category = new Category { Id = 1, Name = "Тест Категория" };
-            var venue = new Venue { Id = 1, Name = "Тест Място", Address = "Адрес" };
-            db.Categories.Add(category);
-            db.Venues.Add(venue);
-
-            db.Events.Add(new Event { Title = "Рок Концерт", Description = "Музика", StartDate = DateTime.Now.AddDays(1), ImageUrl = "test.jpg", CategoryId = 1, VenueId = 1 });
-            db.Events.Add(new Event { Title = "Опера", Description = "Култура", StartDate = DateTime.Now.AddDays(2), ImageUrl = "test.jpg", CategoryId = 1, VenueId = 1 });
-            await db.SaveChangesAsync();
-
-            var controller = new EventsController(db);
-
-            // 2. Act
-            var result = await controller.Index("Рок");
-
-            // 3. Assert
-            var viewResult = Assert.IsType<ViewResult>(result);
-            var model = Assert.IsAssignableFrom<IEnumerable<Event>>(viewResult.ViewData.Model);
-            Assert.Single(model);
-            Assert.Equal("Рок Концерт", model.First().Title);
-        }
         [Fact]
         public async Task Details_ReturnsNotFound_WhenIdIsNull()
         {
-            // Arrange
-            var db = GetDatabase();
-            var controller = new EventsController(db);
-
-            // Act
-            var result = await controller.Details(null);
-
-            // Assert
+            var result = await _controller.Details(null);
             Assert.IsType<NotFoundResult>(result);
         }
 
         [Fact]
-        public async Task Details_ReturnsViewWithEvent_WhenIdIsValid()
+        public async Task Details_ReturnsNotFound_WhenEventDoesNotExist()
         {
-            // Arrange
-            var db = GetDatabase();
-            var category = new Category { Id = 1, Name = "Тест" };
-            var venue = new Venue { Id = 1, Name = "Място", Address = "Адрес" };
-            db.Categories.Add(category);
-            db.Venues.Add(venue);
+            var result = await _controller.Details(999);
+            Assert.IsType<NotFoundResult>(result);
+        }
 
-            var testEvent = new Event { Id = 99, Title = "Специално събитие", Description = "Детайли", StartDate = DateTime.Now.AddDays(1), ImageUrl = "img.jpg", CategoryId = 1, VenueId = 1 };
-            db.Events.Add(testEvent);
-            await db.SaveChangesAsync();
+        [Fact]
+        public async Task Details_ReturnsViewResult_WithCorrectEvent()
+        {
+            var testEvent = await _context.Events.FirstOrDefaultAsync();
+            Assert.NotNull(testEvent);
 
-            var controller = new EventsController(db);
+            var result = await _controller.Details(testEvent.Id);
+            var viewResult = Assert.IsType<ViewResult>(result);
+            var model = Assert.IsAssignableFrom<Event>(viewResult.Model);
 
+            Assert.Equal(testEvent.Id, model.Id);
+        }
 
+        // ==========================================
+        // ТЕСТОВЕ ЗА INDEX (Търсачка и Странициране)
+        // ==========================================
 
-            // Act
-            var result = await controller.Details(99);
+        [Fact]
+        public async Task Index_ReturnsCorrectPageSize_WhenNoSearchTermProvided()
+        {
+            // Act: Търсим без дума, страница 1
+            var result = await _controller.Index(null, 1);
 
             // Assert
             var viewResult = Assert.IsType<ViewResult>(result);
-            var model = Assert.IsType<Event>(viewResult.ViewData.Model);
-            Assert.Equal("Специално събитие", model.Title);
+            var model = Assert.IsAssignableFrom<IEnumerable<Event>>(viewResult.Model);
 
+            // Тъй като имаме 8 събития, а лимитът е 6 на страница, очакваме точно 6
+            Assert.Equal(6, model.Count());
 
+            // Проверяваме дали ViewBag данните за страницирането са верни
+            Assert.Equal(1, viewResult.ViewData["CurrentPage"]);
+            Assert.Equal(2, viewResult.ViewData["TotalPages"]); // 8 събития / 6 = 2 страници
+        }
 
+        [Fact]
+        public async Task Index_ReturnsFilteredEvents_WhenSearchingByTitle()
+        {
+            // Act: Търсим думата "Рок" (имаме 4 такива събития - 2, 4, 6, 8)
+            var result = await _controller.Index("Рок", 1);
 
+            // Assert
+            var viewResult = Assert.IsType<ViewResult>(result);
+            var model = Assert.IsAssignableFrom<IEnumerable<Event>>(viewResult.Model);
+
+            Assert.Equal(4, model.Count());
+            Assert.All(model, e => Assert.Contains("Рок", e.Title));
+        }
+
+        [Fact]
+        public async Task Index_ReturnsFilteredEvents_WhenSearchingByDescription()
+        {
+            // Act: Търсим думата "Специално" (само първото събитие го има в описанието)
+            var result = await _controller.Index("Специално", 1);
+
+            // Assert
+            var viewResult = Assert.IsType<ViewResult>(result);
+            var model = Assert.IsAssignableFrom<IEnumerable<Event>>(viewResult.Model);
+
+            // Трябва да намери точно 1 събитие
+            Assert.Single(model);
+            Assert.Equal("Джаз Вечер 1", model.First().Title);
         }
     }
 }

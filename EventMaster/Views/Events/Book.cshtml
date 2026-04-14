@@ -5,7 +5,7 @@
 }
 
 <div class="container mt-5 mb-5 pb-5">
-    <h2 class="text-white fw-bold mb-4 text-center">Избери своите места за <span class="text-danger">@Model.Title</span></h2>
+    <h2 class="text-dark fw-bold mb-4 text-center">Избери своите места за <span class="text-danger">@Model.Title</span></h2>
 
     <div class="row">
         <div class="col-lg-8">
@@ -64,7 +64,7 @@
 
                 <div class="d-flex justify-content-between mb-4 bg-white p-3 rounded-3 shadow-sm border">
                     <span class="fw-bold text-uppercase align-self-center">Общо:</span>
-                    <span class="fw-black text-danger fs-3"><span id="total">0</span> лв.</span>
+                    <span class="fw-black text-danger fs-3"><span id="total">0</span> &euro;</span>
                 </div>
 
                 <form asp-controller="Cart" asp-action="Add" method="post" id="bookingForm">
@@ -105,7 +105,7 @@
         }
 
         .seat.selected {
-            background-color: #ff0055; /* Неоново розово */
+            background-color: #ff0055;
             box-shadow: 0 0 10px rgba(255,0,85,0.6);
         }
 
@@ -125,7 +125,6 @@
         const selectedSeatsInput = document.getElementById('selectedSeatsInput');
         const buyBtn = document.getElementById('buyBtn');
 
-        // Логика за кликане върху седалка
         container.addEventListener('click', (e) => {
             if (e.target.classList.contains('seat') && !e.target.classList.contains('occupied')) {
                 e.target.classList.toggle('selected');
@@ -133,15 +132,15 @@
             }
         });
 
-        // Функция за пресмятане на цената и обновяване на текста
         function updateSelectedCount() {
-            const selectedSeats = document.querySelectorAll('.seat.selected');
-
-            // Взимаме имената на местата (напр. Р1 М2)
+            // ФИКСЪТ: Добавихме .seats-container отпред, за да НЕ брои розовото кръгче от легендата!
+            const selectedSeats = document.querySelectorAll('.seats-container .seat.selected');
             const seatsArray = [...selectedSeats].map(seat => seat.getAttribute('data-seat'));
 
             const selectedSeatsCount = selectedSeats.length;
-            const pricePerSeat = 50; // Твърда цена за сега
+
+            // ФИКСЪТ: Намаляваме цената на 50% (от 50 на 25 евро)
+            const pricePerSeat = 25;
 
             count.innerText = selectedSeatsCount;
             total.innerText = selectedSeatsCount * pricePerSeat;
@@ -154,7 +153,6 @@
                 buyBtn.disabled = true;
             }
 
-            // Записваме масива в скритото поле, за да го пратим към базата после
             selectedSeatsInput.value = seatsArray.join(', ');
         }
     </script>

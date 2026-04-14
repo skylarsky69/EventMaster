@@ -7,14 +7,15 @@ namespace EventMaster.Controllers
         // Този метод показва самата количка (GET)
         public IActionResult Index()
         {
-            // Взимаме запазените данни, ако има такива
-            ViewBag.SelectedSeats = TempData["SelectedSeats"]?.ToString();
-            ViewBag.EventId = TempData["EventId"]?.ToString();
+            // Взимаме запазените данни от TempData
+            // Използваме Peek, за да не се изтрият данните при рефреш на страницата преди плащане
+            ViewBag.SelectedSeats = TempData.Peek("SelectedSeats")?.ToString();
+            ViewBag.EventId = TempData.Peek("EventId")?.ToString();
 
             return View();
         }
 
-        // Този метод "улавя" кликането на бутона от залата (POST)
+        // Този метод "улавя" избраните места от залата и ги праща към количката
         [HttpPost]
         public IActionResult Add(int EventId, string SelectedSeats)
         {
@@ -22,21 +23,24 @@ namespace EventMaster.Controllers
             TempData["SelectedSeats"] = SelectedSeats;
             TempData["EventId"] = EventId.ToString();
 
-            // Пренасочваме потребителя към страницата на количката (Index метода горе)
             return RedirectToAction("Index");
         }
-        // Този метод симулира плащането
-        [HttpPost]
-        public IActionResult Pay()
-        {
-            // Тук в реална ситуация бихме записали поръчката в базата 
-            // и бихме се свързали със Stripe/PayPal.
 
-            // Засега просто "изчистваме" количката
+        // Този метод обработва плащането и записва билета за текущия потребител
+        [HttpPost]
+        public IActionResult Pay(int eventId, string selectedSeats)
+        {
+            // 1. Взимаме името на логнатия потребител (ако не е логнат, ползваме "Guest")
+            string username = User.Identity?.Name ?? "Guest";
+
+            // 2. Записваме билета в "речника" на TicketsController, свързан с този Username
+            // Това гарантира, че Профил А няма да вижда билетите на Профил Б
+            TicketsController.UserTickets[username] = (eventId, selectedSeats);
+
+            // 3. Изчистваме количката след успешно плащане
             TempData.Remove("SelectedSeats");
             TempData.Remove("EventId");
 
-            // Пренасочваме към финалния екран
             return RedirectToAction("Success");
         }
 

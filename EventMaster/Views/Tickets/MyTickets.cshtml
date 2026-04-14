@@ -10,52 +10,56 @@
     <div class="row justify-content-center">
         <div class="col-lg-8">
 
-            <div class="card bg-dark text-white border-0 shadow-lg rounded-4 overflow-hidden mb-4 position-relative">
-                <div class="row g-0">
+            @if (ViewBag.Event != null)
+            {
+                <div class="card bg-dark text-white border-0 shadow-lg rounded-4 overflow-hidden mb-4 position-relative">
+                    <div class="row g-0">
 
-                    <div class="col-md-8 p-4 border-end border-secondary border-2 border-dashed" style="border-right-style: dashed !important;">
-                        <div class="d-flex justify-content-between align-items-start mb-3">
-                            <span class="badge bg-danger text-uppercase px-3 py-2">Спорт / Гейминг</span>
-                            <span class="text-muted fw-bold"><i class="bi bi-calendar-event me-1"></i> 25 Май 2026</span>
+                        <div class="col-md-8 p-4 border-end border-secondary border-2 border-dashed" style="border-right-style: dashed !important;">
+                            <div class="d-flex justify-content-between align-items-start mb-3">
+                                <span class="badge bg-danger text-uppercase px-3 py-2">@(ViewBag.Event.Category?.Name ?? "Събитие")</span>
+                                <span class="text-muted fw-bold"><i class="bi bi-calendar-event me-1"></i> @ViewBag.Event.StartDate.ToString("dd MMM yyyy")</span>
+                            </div>
+
+                            <h3 class="fw-black text-uppercase mb-1" style="letter-spacing: 1px;">@ViewBag.Event.Title</h3>
+                            <p class="text-muted mb-4"><i class="bi bi-geo-alt-fill text-danger me-1"></i> @(ViewBag.Event.Venue?.Name ?? "Неизвестна локация")</p>
+
+                            <div class="row bg-black p-3 rounded-3 text-center mx-0 mt-auto">
+                                <div class="col-6 border-end border-secondary">
+                                    <span class="d-block text-muted small text-uppercase fw-bold">Сектор</span>
+                                    <span class="fs-5 fw-bold text-white">ОСНОВЕН</span>
+                                </div>
+                                <div class="col-6">
+                                    <span class="d-block text-muted small text-uppercase fw-bold">Твоите Места</span>
+                                    <span class="fs-5 fw-bold text-danger">@ViewBag.MySeats</span>
+                                </div>
+                            </div>
                         </div>
 
-                        <h3 class="fw-black text-uppercase mb-1" style="letter-spacing: 1px;">E-SPORTS BALKAN ARENA</h3>
-                        <p class="text-muted mb-4"><i class="bi bi-geo-alt-fill text-danger me-1"></i> Арена София</p>
+                        <div class="col-md-4 d-flex flex-column justify-content-center align-items-center p-4 bg-black">
+                            <p class="text-muted text-uppercase small fw-bold mb-2">СКАНИРАЙ НА ВХОДА</p>
+                            <i class="bi bi-qr-code text-white bg-dark p-3 rounded-3" style="font-size: 6rem;"></i>
+                            <p class="text-muted mt-3 mb-0" style="font-family: monospace; font-size: 1.1rem;">#TCKT-@ViewBag.Event.Id@DateTime.Now.ToString("fff")</p>
 
-                        <div class="row bg-black p-3 rounded-3 text-center mx-0 mt-auto">
-                            <div class="col-4 border-end border-secondary">
-                                <span class="d-block text-muted small text-uppercase fw-bold">Сектор</span>
-                                <span class="fs-5 fw-bold">VIP</span>
-                            </div>
-                            <div class="col-4 border-end border-secondary">
-                                <span class="d-block text-muted small text-uppercase fw-bold">Ред</span>
-                                <span class="fs-5 fw-bold">1</span>
-                            </div>
-                            <div class="col-4">
-                                <span class="d-block text-muted small text-uppercase fw-bold">Място</span>
-                                <span class="fs-5 fw-bold">2, 3</span>
-                            </div>
+                            <button class="btn btn-outline-light btn-sm mt-3 w-100 fw-bold rounded-pill">
+                                <i class="bi bi-download me-1"></i> Изтегли PDF
+                            </button>
                         </div>
                     </div>
 
-                    <div class="col-md-4 d-flex flex-column justify-content-center align-items-center p-4 bg-black">
-                        <p class="text-muted text-uppercase small fw-bold mb-2">СКАНИРАЙ НА ВХОДА</p>
-                        <i class="bi bi-qr-code text-white bg-dark p-3 rounded-3" style="font-size: 6rem;"></i>
-                        <p class="text-muted mt-3 mb-0" style="font-family: monospace; font-size: 1.1rem;">#TCKT-849201X</p>
-
-                        <button class="btn btn-outline-light btn-sm mt-3 w-100 fw-bold rounded-pill">
-                            <i class="bi bi-download me-1"></i> Изтегли PDF
-                        </button>
-                    </div>
+                    <div class="position-absolute bg-body" style="width: 30px; height: 30px; border-radius: 50%; top: -15px; right: 33.333%; transform: translateX(50%);"></div>
+                    <div class="position-absolute bg-body" style="width: 30px; height: 30px; border-radius: 50%; bottom: -15px; right: 33.333%; transform: translateX(50%);"></div>
                 </div>
-
-                <div class="position-absolute bg-body" style="width: 30px; height: 30px; border-radius: 50%; top: -15px; right: 33.333%; transform: translateX(50%);"></div>
-                <div class="position-absolute bg-body" style="width: 30px; height: 30px; border-radius: 50%; bottom: -15px; right: 33.333%; transform: translateX(50%);"></div>
-            </div>
-
-            <div class="text-center mt-5">
-                <p class="text-muted"><i class="bi bi-info-circle me-1"></i> Показват се само предстоящи събития.</p>
-            </div>
+            }
+            else
+            {
+                <div class="text-center mt-5 py-5 bg-white border rounded-4 shadow-sm">
+                    <i class="bi bi-wallet2 text-muted mb-3 d-block" style="font-size: 4rem;"></i>
+                    <h3 class="fw-bold text-dark">Твоят портфейл е празен</h3>
+                    <p class="text-muted fs-5">Все още нямаш закупени билети за предстоящи събития.</p>
+                    <a asp-controller="Events" asp-action="Index" class="btn btn-ticket mt-4 text-white fw-bold px-5 py-2 rounded-pill shadow">Разгледай Събитията</a>
+                </div>
+            }
 
         </div>
     </div>
