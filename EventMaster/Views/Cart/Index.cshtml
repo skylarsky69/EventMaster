@@ -1,0 +1,49 @@
+﻿@{
+    ViewData["Title"] = "Твоята Количка";
+}
+
+<div class="container mt-5 pt-4 pb-5 text-center">
+    <h1 class="fw-black text-white mb-5 text-uppercase" style="letter-spacing: 2px;">
+        <i class="bi bi-cart3 text-danger me-2"></i> Твоята Количка
+    </h1>
+
+    @if (ViewBag.SelectedSeats != null && ViewBag.SelectedSeats != "")
+    {
+        <div class="card bg-dark border-secondary shadow-lg p-5 mx-auto rounded-4" style="max-width: 650px;">
+            <div class="mb-4">
+                <i class="bi bi-check-circle-fill text-success" style="font-size: 4rem;"></i>
+            </div>
+            <h3 class="text-white fw-bold mb-4">Билетите са запазени успешно!</h3>
+
+            <div class="bg-black p-4 rounded-3 text-start mb-4 border border-secondary">
+                <p class="text-muted text-uppercase small fw-bold mb-1">Събитие ID</p>
+                <p class="text-white fs-5 fw-bold mb-3">#@ViewBag.EventId</p>
+
+                <p class="text-muted text-uppercase small fw-bold mb-1">Твоите Места</p>
+                <div class="d-flex flex-wrap gap-2">
+                    @foreach (var seat in ViewBag.SelectedSeats.Split(", "))
+                    {
+                        <span class="badge bg-danger fs-6 py-2 px-3">@seat</span>
+                    }
+                </div>
+            </div>
+
+            <form asp-controller="Cart" asp-action="Pay" method="post" class="mt-4">
+                <button type="submit" class="btn btn-success btn-lg fw-black w-100 py-3 text-uppercase shadow-sm" style="font-size: 1.2rem;">
+                    Плати сега <i class="bi bi-credit-card ms-2"></i>
+                </button>
+            </form>
+        </div>
+    }
+    else
+    {
+        <div class="py-5">
+            <i class="bi bi-cart-x text-muted" style="font-size: 5rem;"></i>
+            <h3 class="text-white mt-4 fw-bold">Количката е празна</h3>
+            <p class="text-muted fs-5 mb-4">Все още не си избрал места за нито едно събитие.</p>
+            <a asp-controller="Events" asp-action="Index" class="btn btn-outline-light btn-lg rounded-pill px-5 fw-bold">
+                Разгледай Събитията
+            </a>
+        </div>
+    }
+</div>

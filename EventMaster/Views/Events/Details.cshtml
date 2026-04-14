@@ -52,9 +52,10 @@
                 </div>
 
                 <hr />
-                <button class="btn btn-ticket btn-lg w-100 py-3 text-uppercase fw-black mb-3" style="font-weight: 900; font-size: 1.2rem;">
+
+                <a asp-controller="Events" asp-action="Book" asp-route-id="@Model.Id" class="btn btn-ticket btn-lg w-100 py-3 text-uppercase fw-black mb-3" style="font-weight: 900; font-size: 1.2rem;">
                     Купи Билет
-                </button>
+                </a>
 
                 @if (User.IsInRole("Administrator"))
                 {

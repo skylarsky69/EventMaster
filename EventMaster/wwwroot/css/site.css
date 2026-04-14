@@ -195,3 +195,29 @@ body {
     width: 100%;
     padding: 40px 0;
 }
+/* Специален стил за хедър на бял фон */
+.text-dark-on-light .navbar-brand {
+    color: #1a1a1a !important; /* Тъмно сив, почти черен текст */
+}
+
+    .text-dark-on-light .navbar-brand span {
+        color: #ff0055 !important; /* Запазваме неоново розовата част на MASTER */
+    }
+/* Гарантира, че навигацията и менютата са винаги най-отпред */
+header {
+    position: relative;
+    z-index: 1040 !important;
+}
+/* Форсираме черния цвят за EVENT в логото */
+.navbar-brand, .footer span.text-dark {
+    color: #000000 !important;
+}
+
+/* Форсираме белия текст за главния бутон */
+.btn-ticket {
+    color: #ffffff !important;
+}
+
+    .btn-ticket i {
+        color: #ffffff !important;
+    }

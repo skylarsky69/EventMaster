@@ -1,0 +1,161 @@
+﻿@model EventMaster.Data.Models.Event
+
+@{
+    ViewData["Title"] = "Избор на места - " + Model.Title;
+}
+
+<div class="container mt-5 mb-5 pb-5">
+    <h2 class="text-white fw-bold mb-4 text-center">Избери своите места за <span class="text-danger">@Model.Title</span></h2>
+
+    <div class="row">
+        <div class="col-lg-8">
+            <div class="card bg-dark border-secondary shadow-lg rounded-4 p-4 mb-4">
+
+                <div class="stage-container text-center mb-5">
+                    <div class="stage bg-secondary text-white py-2 rounded-pill shadow-sm fw-bold tracking-wide">
+                        С Ц Е Н А
+                    </div>
+                </div>
+
+                <div class="seats-container text-center">
+                    @for (int row = 1; row <= 6; row++)
+                    {
+                        <div class="seat-row d-flex justify-content-center mb-3">
+                            <span class="text-muted me-3 align-self-center fw-bold">Ред @row</span>
+                            @for (int seat = 1; seat <= 8; seat++)
+                            {
+                                var isOccupied = (row == 2 && seat == 3) || (row == 4 && seat == 5) || (row == 4 && seat == 6) ? "occupied" : "";
+
+                                <div class="seat @isOccupied" data-price="50" data-seat="Р@(row) М@(seat)"></div>
+                            }
+                        </div>
+                    }
+                </div>
+
+                <div class="d-flex justify-content-center mt-5 pt-3 border-top border-secondary">
+                    <div class="d-flex align-items-center me-4">
+                        <div class="seat me-2"></div> <span class="text-white">Свободно</span>
+                    </div>
+                    <div class="d-flex align-items-center me-4">
+                        <div class="seat selected me-2"></div> <span class="text-white">Избрано</span>
+                    </div>
+                    <div class="d-flex align-items-center">
+                        <div class="seat occupied me-2"></div> <span class="text-muted">Заето</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-4">
+            <div class="card bg-light border-0 shadow-lg rounded-4 p-4 position-sticky" style="top: 20px;">
+                <h4 class="fw-bold mb-4 border-bottom border-dark pb-2 text-uppercase">Твоята поръчка</h4>
+
+                <div class="d-flex justify-content-between mb-3">
+                    <span class="text-muted fw-bold">Избрани билети:</span>
+                    <span id="count" class="fw-black fs-5">0</span>
+                </div>
+
+                <div class="mb-4">
+                    <span class="text-muted fw-bold d-block mb-2">Места:</span>
+                    <div id="selected-seats-list" class="text-dark fw-bold" style="min-height: 25px;">
+                        Няма избрани места
+                    </div>
+                </div>
+
+                <div class="d-flex justify-content-between mb-4 bg-white p-3 rounded-3 shadow-sm border">
+                    <span class="fw-bold text-uppercase align-self-center">Общо:</span>
+                    <span class="fw-black text-danger fs-3"><span id="total">0</span> лв.</span>
+                </div>
+
+                <form asp-controller="Cart" asp-action="Add" method="post" id="bookingForm">
+                    <input type="hidden" name="SelectedSeats" id="selectedSeatsInput" value="" />
+                    <input type="hidden" name="EventId" value="@Model.Id" />
+
+                    <button type="submit" class="btn btn-ticket btn-lg w-100 py-3 text-uppercase fw-black" id="buyBtn" disabled>
+                        Продължи към количка <i class="bi bi-cart-plus ms-2"></i>
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .stage {
+        width: 60%;
+        margin: 0 auto;
+        letter-spacing: 5px;
+        box-shadow: 0 5px 15px rgba(255, 255, 255, 0.1);
+    }
+
+    .seat {
+        background-color: #444451;
+        height: 25px;
+        width: 30px;
+        margin: 3px;
+        border-top-left-radius: 10px;
+        border-top-right-radius: 10px;
+        cursor: pointer;
+        transition: all 0.2s ease;
+    }
+
+        .seat:hover:not(.occupied) {
+            background-color: #fff;
+            transform: scale(1.2);
+        }
+
+        .seat.selected {
+            background-color: #ff0055; /* Неоново розово */
+            box-shadow: 0 0 10px rgba(255,0,85,0.6);
+        }
+
+        .seat.occupied {
+            background-color: #222;
+            cursor: not-allowed;
+        }
+</style>
+
+@section Scripts {
+    <script>
+        const container = document.querySelector('.seats-container');
+        const seats = document.querySelectorAll('.row .seat:not(.occupied)');
+        const count = document.getElementById('count');
+        const total = document.getElementById('total');
+        const selectedSeatsList = document.getElementById('selected-seats-list');
+        const selectedSeatsInput = document.getElementById('selectedSeatsInput');
+        const buyBtn = document.getElementById('buyBtn');
+
+        // Логика за кликане върху седалка
+        container.addEventListener('click', (e) => {
+            if (e.target.classList.contains('seat') && !e.target.classList.contains('occupied')) {
+                e.target.classList.toggle('selected');
+                updateSelectedCount();
+            }
+        });
+
+        // Функция за пресмятане на цената и обновяване на текста
+        function updateSelectedCount() {
+            const selectedSeats = document.querySelectorAll('.seat.selected');
+
+            // Взимаме имената на местата (напр. Р1 М2)
+            const seatsArray = [...selectedSeats].map(seat => seat.getAttribute('data-seat'));
+
+            const selectedSeatsCount = selectedSeats.length;
+            const pricePerSeat = 50; // Твърда цена за сега
+
+            count.innerText = selectedSeatsCount;
+            total.innerText = selectedSeatsCount * pricePerSeat;
+
+            if (seatsArray.length > 0) {
+                selectedSeatsList.innerHTML = `<span class="badge bg-danger fs-6 me-1 mb-1">${seatsArray.join('</span><span class="badge bg-danger fs-6 me-1 mb-1">')}</span>`;
+                buyBtn.disabled = false;
+            } else {
+                selectedSeatsList.innerText = 'Няма избрани места';
+                buyBtn.disabled = true;
+            }
+
+            // Записваме масива в скритото поле, за да го пратим към базата после
+            selectedSeatsInput.value = seatsArray.join(', ');
+        }
+    </script>
+}

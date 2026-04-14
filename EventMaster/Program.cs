@@ -8,7 +8,6 @@ namespace EventMaster
 {
     public class Program
     {
-        // ���������: void ����� async Task
         public static async Task Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
@@ -19,7 +18,6 @@ namespace EventMaster
                 options.UseSqlServer(connectionString));
             builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
-            // ���������� ApplicationUser, �������� ���� � ���������� �������������� �� �����
             builder.Services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = false)
                 .AddRoles<IdentityRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>();
@@ -36,11 +34,13 @@ namespace EventMaster
             else
             {
                 app.UseExceptionHandler("/Home/Error");
-                app.UseStatusCodePagesWithReExecute("/Home/Error", "?statusCode={0}");
-                app.UseStatusCodePagesWithReExecute("/Home/Error/{0}");
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
+
+            // ЕТО ТОВА Е МАГИЯТА ЗА 404! 
+            // Вече е ИЗВЪН if-else блока, така че ще работи и докато разработваш!
+            app.UseStatusCodePagesWithReExecute("/Home/Error", "?statusCode={0}");
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();
@@ -50,7 +50,7 @@ namespace EventMaster
             app.UseAuthentication();
             app.UseAuthorization();
 
-            // ������� �� ����������������� ���� (Areas)
+            // Areas маршрути
             app.MapControllerRoute(
                 name: "areas",
                 pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}");
@@ -61,7 +61,7 @@ namespace EventMaster
 
             app.MapRazorPages();
 
-            // --- �������� �� SEEDING ---
+            // --- Seeding Data ---
             using (var scope = app.Services.CreateScope())
             {
                 var services = scope.ServiceProvider;
@@ -71,12 +71,12 @@ namespace EventMaster
                 }
                 catch (Exception ex)
                 {
-                    Console.WriteLine("������ ��� Seeding: " + ex.Message);
+                    Console.WriteLine("Грешка при Seeding: " + ex.Message);
                 }
             }
             // ---------------------------
 
-            app.Run(); // ��������� ���� ���� app.Run()
+            app.Run();
         }
     }
 }

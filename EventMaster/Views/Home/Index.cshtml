@@ -4,11 +4,11 @@
 {
     <div class="container text-center py-5 mt-5">
         <i class="bi bi-calendar-x text-muted" style="font-size: 5rem;"></i>
-        <h2 class="fw-bold mt-3">Все още няма добавени събития</h2>
+        <h2 class="fw-bold mt-3 text-dark">Все още няма добавени събития</h2>
         <p class="text-muted">Моля, влезте в Админ панела и добавете ново събитие, за да се появи тук.</p>
         @if (User.IsInRole("Administrator"))
         {
-            <a asp-area="Admin" asp-controller="Events" asp-action="Create" class="btn btn-ticket mt-3">Добави първото събитие</a>
+            <a asp-area="Admin" asp-controller="Events" asp-action="Create" class="btn btn-ticket mt-3 text-white fw-bold">Добави първото събитие</a>
         }
     </div>
 }
@@ -21,9 +21,10 @@ else
             <div class="hero-overlay">
                 <div class="container">
                     <span class="badge bg-danger mb-2">FEATURED EVENT</span>
-                    <h1 class="display-2 fw-bold">@featured.Title</h1>
-                    <p class="fs-4">@featured.Venue?.Name | @featured.StartDate.ToString("dd MMM yyyy")</p>
-                    <a asp-controller="Events" asp-action="Details" asp-route-id="@featured.Id" class="btn btn-ticket btn-lg">Get Tickets Now</a>
+                    <h1 class="display-2 fw-bold text-white">@featured.Title</h1>
+                    <p class="fs-4 text-white">@featured.Venue?.Name | @featured.StartDate.ToString("dd MMM yyyy")</p>
+
+                    <a asp-controller="Events" asp-action="Details" asp-route-id="@featured.Id" class="btn btn-ticket btn-lg text-white fw-bold">Get Tickets Now</a>
                 </div>
             </div>
         </div>
@@ -32,8 +33,8 @@ else
     if (Model.Count() > 1)
     {
         <div class="container mt-5">
-            <h2 class="fw-bold mb-4 text-uppercase">Upcoming Events</h2>
-            <div class="row row-cols-1 row-cols-md-3 g-4">
+            <h2 class="fw-bold mb-4 text-uppercase text-dark">Upcoming Events</h2>
+            <div class="row row-cols-1 row-cols-md-3 g-4 pb-5">
                 @foreach (var item in Model.Skip(1))
                 {
                     <div class="col">
@@ -45,10 +46,10 @@ else
                                     <span>@item.StartDate.Day</span>
                                 </div>
                             </div>
-                            <div class="card-body p-4">
-                                <h5 class="fw-bold fs-4">@item.Title</h5>
+                            <div class="card-body p-4 bg-white">
+                                <h5 class="fw-bold fs-4 text-dark">@item.Title</h5>
                                 <p class="text-muted mb-0"><i class="bi bi-geo-alt-fill text-danger"></i> @item.Venue?.Name</p>
-                                <p class="text-pink fw-bold mt-2">Starting from 35.00 BGN</p>
+                                <p class="fw-bold mt-2" style="color: #ff0055;">Starting from 35.00 BGN</p>
                                 <a asp-controller="Events" asp-action="Details" asp-route-id="@item.Id" class="btn btn-outline-dark w-100 mt-3 fw-bold">VIEW DETAILS</a>
                             </div>
                         </div>

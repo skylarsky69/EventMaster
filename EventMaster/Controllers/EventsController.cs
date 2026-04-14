@@ -1,6 +1,9 @@
 ﻿using EventMaster.Data;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace EventMaster.Controllers
 {
@@ -65,6 +68,20 @@ namespace EventMaster.Controllers
             }
 
             return View(@event);
+        }
+
+        // --- НОВИЯТ МЕТОД ЗА ИЗБОР НА МЕСТА ---
+        [HttpGet]
+        public async Task<IActionResult> Book(int id)
+        {
+            var eventItem = await _context.Events.FindAsync(id);
+            if (eventItem == null)
+            {
+                return NotFound();
+            }
+
+            // Връщаме изгледа Book.cshtml и му подаваме данните за събитието
+            return View(eventItem);
         }
     }
 }
