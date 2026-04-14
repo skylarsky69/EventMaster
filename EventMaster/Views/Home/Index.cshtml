@@ -4,136 +4,138 @@
     ViewData["Title"] = "Начало";
 }
 
-<div class="hero-section text-center text-white d-flex align-items-center justify-content-center" style="background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.8)), url('https://images.unsplash.com/photo-1459749411175-04bf5292ceea?q=80&w=2000&auto=format&fit=crop') center/cover no-repeat; height: 75vh; margin-top: -1rem; margin-left: -12px; margin-right: -12px;">
-    <div class="container px-4">
-        <h1 class="display-3 fw-black text-uppercase mb-3" style="letter-spacing: 2px;">Открий следващото си <span class="text-danger">Епично</span> преживяване</h1>
-        <p class="lead mb-5 fs-4 text-light w-75 mx-auto">Резервирай билети за най-добрите концерти, спортни събития и театрални постановки в страната. Бързо, лесно и 100% сигурно.</p>
-        <a asp-controller="Events" asp-action="Index" class="btn btn-ticket btn-lg rounded-pill px-5 py-3 fw-bold text-uppercase shadow-lg fs-5">
-            Виж всички събития <i class="bi bi-arrow-right ms-2"></i>
-        </a>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+
+<style>
+    body {
+        font-family: 'Inter', sans-serif; /* Основен шрифт за четливост */
+    }
+
+    h1, h2, h3, .fw-black {
+        font-family: 'Montserrat', sans-serif; /* Мощен шрифт за заглавия */
+        font-weight: 900;
+    }
+
+    .hero-section {
+        background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.8)), url('https://images.unsplash.com/photo-1459749411175-04bf5292ceea?q=80&w=2000') center/cover no-repeat;
+        height: 80vh;
+        margin-top: -1rem;
+    }
+
+    .feature-card:hover {
+        transform: translateY(-10px);
+        transition: 0.3s;
+    }
+
+    .stat-card {
+        border-left: 4px solid #ff0055;
+    }
+</style>
+
+<div class="hero-section d-flex align-items-center justify-content-center text-center text-white">
+    <div class="container">
+        <h1 class="display-2 text-uppercase mb-3">Твоят билет за <span class="text-danger">Емоции</span></h1>
+        <p class="lead fs-4 mb-5 w-75 mx-auto opacity-75">EventMaster е водещата платформа за ексклузивен достъп до най-горещите събития в Европа.</p>
+        <div class="d-grid gap-3 d-sm-flex justify-content-sm-center">
+            <a asp-controller="Events" asp-action="Index" class="btn btn-danger btn-lg rounded-pill px-5 py-3 fw-bold">КУПИ БИЛЕТ СЕГА</a>
+            <a href="#how-it-works" class="btn btn-outline-light btn-lg rounded-pill px-5 py-3 fw-bold">КАК РАБОТИ?</a>
+        </div>
+    </div>
+</div>
+
+<div class="container mt-n5 position-relative" style="z-index: 5;">
+    <div class="row g-0 bg-white shadow-lg rounded-4 overflow-hidden text-center">
+        <div class="col-md-3 p-4 stat-card">
+            <h2 class="text-danger mb-0">50k+</h2>
+            <p class="text-muted small fw-bold text-uppercase mb-0">Продадени билета</p>
+        </div>
+        <div class="col-md-3 p-4 stat-card">
+            <h2 class="text-danger mb-0">120+</h2>
+            <p class="text-muted small fw-bold text-uppercase mb-0">Активни събития</p>
+        </div>
+        <div class="col-md-3 p-4 stat-card">
+            <h2 class="text-danger mb-0">15</h2>
+            <p class="text-muted small fw-bold text-uppercase mb-0">Града в страната</p>
+        </div>
+        <div class="col-md-3 p-4 stat-card border-0">
+            <h2 class="text-danger mb-0">24/7</h2>
+            <p class="text-muted small fw-bold text-uppercase mb-0">Поддръжка</p>
+        </div>
     </div>
 </div>
 
 <div class="container mt-5 pt-5">
-    <div class="row text-center g-4">
-        <div class="col-md-4">
-            <div class="p-4 bg-light rounded-4 shadow-sm h-100 border-0 feature-card">
-                <i class="bi bi-lightning-charge-fill text-danger mb-3" style="font-size: 3rem;"></i>
-                <h4 class="fw-bold text-dark">Мигновени Билети</h4>
-                <p class="text-muted">Получаваш своя дигитален QR билет в портфейла веднага след плащане. Без чакане на опашки.</p>
-            </div>
-        </div>
-        <div class="col-md-4">
-            <div class="p-4 bg-dark text-white rounded-4 shadow-lg h-100 border-0 feature-card" style="transform: scale(1.05); z-index: 1;">
-                <i class="bi bi-shield-lock-fill text-danger mb-3" style="font-size: 3rem;"></i>
-                <h4 class="fw-bold">100% Сигурност</h4>
-                <p class="text-light">Гарантирана защита на твоите плащания и лични данни с най-висок клас криптиране.</p>
-            </div>
-        </div>
-        <div class="col-md-4">
-            <div class="p-4 bg-light rounded-4 shadow-sm h-100 border-0 feature-card">
-                <i class="bi bi-star-fill text-danger mb-3" style="font-size: 3rem;"></i>
-                <h4 class="fw-bold text-dark">Премиум Събития</h4>
-                <p class="text-muted">Достъп до ексклузивни места и VIP пакети за най-търсените събития в Европа.</p>
-            </div>
-        </div>
-    </div>
-</div>
-
-<div class="container mt-5 pt-5 pb-4">
-    <div class="d-flex justify-content-between align-items-end mb-4 border-bottom border-secondary pb-3">
-        <h2 class="fw-black text-dark text-uppercase mb-0">
-            <i class="bi bi-fire text-danger me-2"></i> Топ Събития
-        </h2>
-        <a asp-controller="Events" asp-action="Index" class="text-danger fw-bold text-decoration-none fs-5">Виж всички <i class="bi bi-arrow-right"></i></a>
+    <div class="d-flex justify-content-between align-items-center mb-5">
+        <h2 class="text-uppercase mb-0">Препоръчани за <span class="text-danger">Теб</span></h2>
+        <a asp-controller="Events" asp-action="Index" class="btn btn-link text-danger fw-bold text-decoration-none">Виж всички събития →</a>
     </div>
 
     <div class="row row-cols-1 row-cols-md-3 g-4">
         @if (Model != null && Model.Any())
         {
-            // Взимаме само първите 3 събития за началната страница
-            @foreach (var item in Model.Take(3))
+            // ТРИК: Използваме Guid.NewGuid(), за да разбъркаме събитията при всяко зареждане
+            var randomEvents = Model.OrderBy(x => Guid.NewGuid()).Take(3);
+
+            @foreach (var item in randomEvents)
             {
                 <div class="col">
-                    <div class="card h-100 shadow border-0 rounded-4 overflow-hidden position-relative transition-all event-card">
-                        <img src="@item.ImageUrl" class="card-img-top" alt="@item.Title" style="height: 250px; object-fit: cover;">
-
-                        <div class="position-absolute top-0 end-0 bg-danger text-white text-center rounded-bottom-3 me-3 p-2 shadow-lg" style="min-width: 65px;">
-                            <span class="d-block fw-bold fs-4 mb-0" style="line-height: 1;">@item.StartDate.Day</span>
-                            <span class="d-block small text-uppercase fw-bold">@item.StartDate.ToString("MMM")</span>
-                        </div>
-
-                        <div class="card-body p-4 bg-white">
-                            <span class="badge bg-dark text-uppercase px-3 py-2 mb-3 shadow-sm">@item.Category?.Name</span>
-                            <h4 class="fw-black text-dark text-uppercase mb-3">@item.Title</h4>
-
-                            <div class="d-flex align-items-center mb-2">
-                                <i class="bi bi-geo-alt-fill text-danger me-2"></i>
-                                <span class="text-muted small fw-bold">@(item.Venue?.Name ?? "Очаквайте локация")</span>
+                    <div class="card h-100 border-0 shadow-sm rounded-4 overflow-hidden">
+                        <img src="@item.ImageUrl" class="card-img-top" style="height: 250px; object-fit: cover;">
+                        <div class="card-body p-4">
+                            <span class="badge bg-dark mb-2">@item.Category?.Name</span>
+                            <h4 class="fw-bold">@item.Title</h4>
+                            <p class="text-muted small">@item.Venue?.Name</p>
+                            <div class="d-flex justify-content-between align-items-center mt-4">
+                                <span class="fw-bold fs-5 text-danger">25.00 &euro;</span>
+                                <a asp-controller="Events" asp-action="Details" asp-route-id="@item.Id" class="btn btn-outline-dark rounded-pill px-4">Детайли</a>
                             </div>
-                            <div class="d-flex align-items-center mt-3">
-                                <i class="bi bi-tag-fill text-danger me-2"></i>
-                                <span class="fw-bold fs-5" style="color: #ff0055;">От 25.00 &euro;</span>
-                            </div>
-                        </div>
-
-                        <div class="card-footer bg-white border-0 p-4 pt-0 mt-auto">
-                            <a asp-action="Details" asp-controller="Events" asp-route-id="@item.Id" class="btn btn-outline-dark w-100 fw-bold text-uppercase rounded-pill border-2 py-2">
-                                Виж Детайли
-                            </a>
                         </div>
                     </div>
                 </div>
             }
         }
-        else
-        {
-            <div class="col-12 text-center py-5">
-                <p class="text-muted fs-5">Очаквайте скоро нови събития!</p>
+    </div>
+</div>
+
+<div id="how-it-works" class="container mt-5 pt-5 pb-5">
+    <div class="text-center mb-5">
+        <h2 class="text-uppercase">Купи билет в <span class="text-danger">3 лесни стъпки</span></h2>
+    </div>
+    <div class="row g-4 text-center">
+        <div class="col-md-4">
+            <div class="p-4 border rounded-4 feature-card bg-white">
+                <div class="bg-danger text-white rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width: 60px; height: 60px; font-size: 24px; font-weight: bold;">1</div>
+                <h5>Избери Събитие</h5>
+                <p class="text-muted">Намери любимия си изпълнител или спортен отбор в нашия каталог.</p>
             </div>
-        }
+        </div>
+        <div class="col-md-4">
+            <div class="p-4 border rounded-4 feature-card bg-white">
+                <div class="bg-danger text-white rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width: 60px; height: 60px; font-size: 24px; font-weight: bold;">2</div>
+                <h5>Избери Местоположение</h5>
+                <p class="text-muted">Използвай нашата интерактивна карта, за да избереш най-доброто място в залата.</p>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="p-4 border rounded-4 feature-card bg-white">
+                <div class="bg-danger text-white rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width: 60px; height: 60px; font-size: 24px; font-weight: bold;">3</div>
+                <h5>Вземи своя QR Код</h5>
+                <p class="text-muted">Плати сигурно и получи билета си веднага в твоя дигитален портфейл.</p>
+            </div>
+        </div>
     </div>
 </div>
 
-<div class="bg-danger text-white mt-5 py-5 text-center" style="margin-left: -12px; margin-right: -12px;">
-    <div class="container py-4">
-        <h2 class="fw-black text-uppercase mb-3">Не изпускай нито едно събитие!</h2>
-        <p class="fs-5 mb-4 text-light">Абонирай се за нашия бюлетин и получавай първи информация за нови концерти и ексклузивни отстъпки.</p>
-        <form class="d-flex justify-content-center mx-auto" style="max-width: 500px;">
-            <input type="email" class="form-control form-control-lg rounded-start-pill border-0 px-4" placeholder="Твоят имейл адрес..." required>
-            <button class="btn btn-dark btn-lg rounded-end-pill px-4 fw-bold text-uppercase" type="submit">Абонирам се</button>
-        </form>
+<div class="bg-dark text-white py-5 mt-5">
+    <div class="container text-center py-4">
+        <h2 class="mb-4">АБОНИРАЙ СЕ ЗА <span class="text-danger">EXCLUSIVE</span> ОФЕРТИ</h2>
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <div class="input-group mb-3">
+                    <input type="text" class="form-control form-control-lg rounded-start-pill" placeholder="Твоят имейл...">
+                    <button class="btn btn-danger btn-lg rounded-end-pill px-4 fw-bold" type="button">ДА!</button>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
-
-<style>
-    .feature-card {
-        transition: transform 0.3s ease;
-    }
-
-        .feature-card:hover {
-            transform: translateY(-10px) !important;
-        }
-
-    .event-card {
-        transition: transform 0.3s ease, box-shadow 0.3s ease;
-    }
-
-        .event-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 15px 30px rgba(0,0,0,0.15) !important;
-        }
-
-    .btn-ticket {
-        background-color: #ff0055 !important;
-        border-color: #ff0055 !important;
-        color: white !important;
-        transition: all 0.3s ease;
-    }
-
-        .btn-ticket:hover {
-            background-color: #d40047 !important;
-            color: white !important;
-            transform: scale(1.05);
-        }
-</style>
