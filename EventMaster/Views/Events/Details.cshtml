@@ -10,7 +10,7 @@
     <div class="row bg-white shadow-lg rounded-4 overflow-hidden">
 
         <div class="col-lg-6 p-0 position-relative">
-            <img src="@Model.ImageUrl" class="img-fluid w-100 h-100" style="object-fit: cover; min-height: 400px;" alt="@Model.Title">
+            <img src="@Model.ImageUrl" class="img-fluid w-100 h-100" style="object-fit: cover; min-height: 500px;" alt="@Model.Title">
             <div class="position-absolute top-0 start-0 m-4">
                 <span class="badge bg-danger fs-5 shadow">@Model.Category?.Name</span>
             </div>
@@ -21,7 +21,9 @@
         </div>
 
         <div class="col-lg-6 p-5 d-flex flex-column">
-            <h1 class="fw-black text-uppercase text-dark mb-3 display-5">@Model.Title</h1>
+            <div class="d-flex justify-content-between align-items-start mb-2">
+                <h1 class="fw-black text-uppercase text-dark display-5 mb-0">@Model.Title</h1>
+            </div>
 
             <div class="d-flex align-items-center mb-4 text-muted">
                 <i class="bi bi-calendar-check fs-4 me-3 text-danger"></i>
@@ -35,10 +37,10 @@
 
             <hr class="mb-4">
 
-            <h5 class="fw-bold mb-3">За събитието:</h5>
-            <p class="text-muted mb-5" style="line-height: 1.8;">@Model.Description</p>
+            <h5 class="fw-bold mb-3 text-uppercase" style="letter-spacing: 1px;">За събитието:</h5>
+            <p class="text-muted mb-5" style="line-height: 1.8; font-size: 1.1rem;">@Model.Description</p>
 
-            <div class="mt-auto row g-3">
+            <div class="mt-auto row g-3 mb-4">
                 <div class="col-md-6">
                     <div class="bg-light p-3 rounded-3 text-center border">
                         <span class="d-block text-muted small text-uppercase fw-bold">Цена на билет</span>
@@ -51,6 +53,18 @@
                     </a>
                 </div>
             </div>
+
+            @if (User.IsInRole("Administrator"))
+            {
+                <div class="bg-light p-3 rounded-4 border border-warning border-2 d-flex gap-2">
+                    <a asp-area="Admin" asp-controller="Events" asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-warning flex-grow-1 fw-bold text-uppercase">
+                        <i class="bi bi-pencil-square me-1"></i> Редактирай
+                    </a>
+                    <a asp-area="Admin" asp-controller="Events" asp-action="Delete" asp-route-id="@Model.Id" class="btn btn-outline-danger flex-grow-1 fw-bold text-uppercase">
+                        <i class="bi bi-trash me-1"></i> Изтрий
+                    </a>
+                </div>
+            }
         </div>
     </div>
 
@@ -58,15 +72,15 @@
         <div class="col-12">
             <div class="card border-0 shadow-sm rounded-4 p-4">
                 <div class="d-flex justify-content-between align-items-center mb-4">
-                    <h3 class="fw-black mb-0"><i class="bi bi-map text-danger me-2"></i> Локация и Маршрут</h3>
+                    <h3 class="fw-black mb-0 text-uppercase"><i class="bi bi-map text-danger me-2"></i> Локация и Маршрут</h3>
                     <button id="findMeBtn" class="btn btn-outline-danger fw-bold rounded-pill px-4" onclick="findMyLocation()">
-                        <i class="bi bi-geo text-danger me-1"></i> Покажи къде съм аз
+                        <i class="bi bi-geo text-danger me-1"></i> Къде съм аз?
                     </button>
                 </div>
 
-                <div id="map" class="rounded-3 bg-light border" style="height: 400px; width: 100%;">
+                <div id="map" class="rounded-3 bg-light border" style="height: 450px; width: 100%; z-index: 1;">
                     <div class="d-flex justify-content-center align-items-center h-100">
-                        <span class="text-muted">Зареждане на картата...</span>
+                        <span class="text-muted">Зареждане на интерактивна карта...</span>
                     </div>
                 </div>
                 <p id="geoError" class="text-danger mt-2 fw-bold d-none"></p>
@@ -81,20 +95,15 @@
     <script>
         const eventId = @Model.Id;
 
-        // ==========================================
-        // БОНУС 1: LOCAL STORAGE (Любими)
-        // ==========================================
         document.addEventListener("DOMContentLoaded", function() {
             checkIfFavorite();
             initMap();
         });
 
+        // LOCAL STORAGE ЛОГИКА
         function checkIfFavorite() {
-            // Взимаме масива с любими от LocalStorage
             let favorites = JSON.parse(localStorage.getItem('eventFavorites')) || [];
             let icon = document.getElementById('favoriteIcon');
-
-            // Ако ID-то го има в масива, правим сърцето пълно
             if (favorites.includes(eventId)) {
                 icon.classList.remove('bi-heart');
                 icon.classList.add('bi-heart-fill');
@@ -104,93 +113,36 @@
         function toggleFavorite(id) {
             let favorites = JSON.parse(localStorage.getItem('eventFavorites')) || [];
             let icon = document.getElementById('favoriteIcon');
-
             if (favorites.includes(id)) {
-                // Премахваме от любими
                 favorites = favorites.filter(favId => favId !== id);
-                icon.classList.remove('bi-heart-fill');
-                icon.classList.add('bi-heart');
-                // Изтрихме alert-а тук!
+                icon.classList.replace('bi-heart-fill', 'bi-heart');
             } else {
-                // Добавяме в любими
                 favorites.push(id);
-                icon.classList.remove('bi-heart');
-                icon.classList.add('bi-heart-fill');
-                // Изтрихме alert-а тук!
+                icon.classList.replace('bi-heart', 'bi-heart-fill');
             }
-
-            // Записваме обратно в LocalStorage
             localStorage.setItem('eventFavorites', JSON.stringify(favorites));
         }
 
-        // ==========================================
-        // БОНУС 2: HTML5 GEOLOCATION & MAP
-        // ==========================================
+        // GEOLOCATION ЛОГИКА
         let map;
-        let eventMarker;
-
         function initMap() {
-            // Инициализираме картата
             map = L.map('map').setView([42.6977, 23.3219], 13);
-
-            // Добавяме безплатните плочки от OpenStreetMap
             L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
                 attribution: '&copy; OpenStreetMap contributors'
             }).addTo(map);
-
-            // Слагаме маркер за събитието
-            eventMarker = L.marker([42.6977, 23.3219]).addTo(map)
-                .bindPopup("<b>@Model.Venue?.Name</b><br>Локация на събитието.").openPopup();
+            L.marker([42.6977, 23.3219]).addTo(map)
+                .bindPopup("<b>@Model.Venue?.Name</b>").openPopup();
         }
 
         function findMyLocation() {
             let btn = document.getElementById('findMeBtn');
-            let errorMsg = document.getElementById('geoError');
-
-            btn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span> Търсене...';
-            btn.disabled = true;
-
-            // HTML5 Geolocation API
             if (navigator.geolocation) {
-                navigator.geolocation.getCurrentPosition(
-                    function(position) {
-                        // Успешно взета локация
-                        let userLat = position.coords.latitude;
-                        let userLng = position.coords.longitude;
-
-                        // Слагаме син маркер за потребителя
-                        var userIcon = L.icon({
-                            iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-blue.png',
-                            shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
-                            iconSize: [25, 41],
-                            iconAnchor: [12, 41],
-                            popupAnchor: [1, -34],
-                            shadowSize: [41, 41]
-                        });
-
-                        L.marker([userLat, userLng], {icon: userIcon}).addTo(map)
-                            .bindPopup("<b>Вие сте тук!</b>").openPopup();
-
-                        // Фокусираме картата
-                        var bounds = L.latLngBounds([
-                            [42.6977, 23.3219], // Събитие
-                            [userLat, userLng]  // Потребител
-                        ]);
-                        map.fitBounds(bounds, {padding: [50, 50]});
-
-                        btn.innerHTML = '<i class="bi bi-check-circle text-success me-1"></i> Локацията е намерена';
-                    },
-                    function(error) {
-                        // Грешка
-                        errorMsg.innerText = "Не успяхме да вземем вашата локация. Моля, позволете достъп в браузъра.";
-                        errorMsg.classList.remove('d-none');
-                        btn.innerHTML = '<i class="bi bi-geo text-danger me-1"></i> Опитай пак';
-                        btn.disabled = false;
-                    }
-                );
-            } else {
-                errorMsg.innerText = "Вашият браузър не поддържа HTML5 Geolocation.";
-                errorMsg.classList.remove('d-none');
+                navigator.geolocation.getCurrentPosition(function(position) {
+                    let userLat = position.coords.latitude;
+                    let userLng = position.coords.longitude;
+                    L.marker([userLat, userLng]).addTo(map).bindPopup("Вие сте тук").openPopup();
+                    map.flyTo([userLat, userLng], 14);
+                });
             }
         }
     </script>
