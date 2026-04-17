@@ -36,7 +36,6 @@ namespace EventMaster.Areas.Admin.Controllers
             {
                 _context.Add(@event);
                 await _context.SaveChangesAsync();
-                // Връщаме те към главната страница след създаване
                 return RedirectToAction("Index", "Events", new { area = "" });
             }
 
@@ -88,7 +87,6 @@ namespace EventMaster.Areas.Admin.Controllers
                     if (!_context.Events.Any(e => e.Id == @event.Id)) return NotFound();
                     else throw;
                 }
-                // Връщаме те към главната страница след успешно редактиране
                 return RedirectToAction("Index", "Events", new { area = "" });
             }
 
@@ -121,7 +119,6 @@ namespace EventMaster.Areas.Admin.Controllers
                 _context.Events.Remove(@event);
                 await _context.SaveChangesAsync();
             }
-            // Връщаме те към главната страница след изтриване
             return RedirectToAction("Index", "Events", new { area = "" });
         }
     }
