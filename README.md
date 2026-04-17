@@ -13,6 +13,7 @@
 
 Проектът е успешно публикуван и достъпен онлайн на следния адрес:
 **🔗 Линк към сайта:** [EventMaster Live](https://eventmaster-bg-hjgpcygtgybjdvaf.germanywestcentral-01.azurewebsites.net/)
+**🎥 Видео Демонстрация:** [YouTube](https://youtu.be/GEDeBBPZD3Y)
 
 ---
 
