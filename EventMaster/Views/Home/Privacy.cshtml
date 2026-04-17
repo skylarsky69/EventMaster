@@ -1,49 +1,34 @@
 ﻿@{
-    ViewData["Title"] = "Политика за поверителност";
+    ViewData["Title"] = "Поверителност";
 }
 
-<div class="container py-5">
-    <div class="row justify-content-center">
-        <div class="col-lg-8">
-            <div class="text-center mb-5">
-                <h1 class="display-5 fw-bold text-primary"><i class="bi bi-shield-check"></i> @ViewData["Title"]</h1>
-                <p class="lead text-muted">Последна актуализация: @DateTime.Now.ToString("dd.MM.yyyy") г.</p>
+<div class="container mt-5 mb-5">
+    <div class="card bg-dark text-white shadow-lg border-0" style="border-left: 5px solid #e50914 !important;">
+        <div class="card-body p-5">
+            <h1 class="display-4 fw-bold text-danger mb-4">Политика за поверителност</h1>
+
+            <p class="lead text-muted">Последна актуализация: 17 април 2026 г.</p>
+
+            <hr class="border-secondary my-4">
+
+            <section class="mb-5">
+                <h3 class="text-light mb-3"><i class="bi bi-shield-lock-fill me-2"></i> 1. Какви данни събираме?</h3>
+                <p>Ние събираме само информацията, която е необходима за обработката на вашите резервации и билети, като имейл адрес, име и фамилия.</p>
+            </section>
+
+            <section class="mb-5">
+                <h3 class="text-light mb-3"><i class="bi bi-eye-slash-fill me-2"></i> 2. Споделяне на информация</h3>
+                <p>Вашите данни никога няма да бъдат продавани на трети страни. Те се използват единствено за идентификация при вход в EVENTMASTER и достъп до вашите поръчки.</p>
+            </section>
+
+            <section>
+                <h3 class="text-light mb-3"><i class="bi bi-cookie me-2"></i> 3. Бисквитки (Cookies)</h3>
+                <p>Използваме "бисквитки", за да поддържаме вашата сесия активна и да ви предоставим достъп до Админ панела, ако сте оторизиран потребител.</p>
+            </section>
+
+            <div class="mt-5 pt-4 text-center border-top border-secondary">
+                <p class="text-muted italic">Ако имате въпроси, свържете се с нас на: <span class="text-danger">privacy@eventmaster.com</span></p>
             </div>
-
-            <div class="card shadow-sm border-0 rounded-4">
-                <div class="card-body p-4 p-md-5">
-
-                    <h4 class="fw-bold text-dark border-bottom pb-2 mb-3">1. Каква информация събираме?</h4>
-                    <p class="text-secondary mb-4">
-                        Ние в <strong>EventMaster</strong> събираме само информацията, която е строго необходима за предоставяне на нашите услуги. Това включва вашето име, имейл адрес и данни за контакт при регистрация или при закупуване на билет за събитие.
-                    </p>
-
-                    <h4 class="fw-bold text-dark border-bottom pb-2 mb-3">2. Как използваме вашите данни?</h4>
-                    <p class="text-secondary mb-2">Вашите лични данни се използват изключително за следните цели:</p>
-                    <ul class="text-secondary mb-4">
-                        <li>Обработка на вашите поръчки и сигурно издаване на електронни билети.</li>
-                        <li>Изпращане на важна информация относно събития, за които сте закупили билети (например промяна на дата, час или място на провеждане).</li>
-                        <li>Подобряване на цялостното потребителско изживяване в нашата платформа.</li>
-                    </ul>
-
-                    <h4 class="fw-bold text-dark border-bottom pb-2 mb-3">3. Защита на данните</h4>
-                    <p class="text-secondary mb-4">
-                        Сигурността на вашата информация е наш абсолютен приоритет. Използваме съвременни методи за криптиране и защита на нашата база данни, за да предотвратим неоторизиран достъп, загуба или злоупотреба с вашите данни.
-                    </p>
-
-                    <h4 class="fw-bold text-dark border-bottom pb-2 mb-3">4. Споделяне с трети страни</h4>
-                    <p class="text-secondary mb-0">
-                        EventMaster <strong>не</strong> продава, не отдава под наем и не споделя вашите лични данни с трети страни за маркетингови цели. Данни могат да бъдат предоставени на органите на реда само при законово изискване.
-                    </p>
-                </div>
-            </div>
-
-            <div class="text-center mt-4">
-                <a asp-controller="Home" asp-action="Index" class="btn btn-outline-primary rounded-pill px-4">
-                    <i class="bi bi-arrow-left me-2"></i> Обратно към Начало
-                </a>
-            </div>
-
         </div>
     </div>
 </div>
