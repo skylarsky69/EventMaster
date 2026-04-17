@@ -8,33 +8,32 @@
 
 <div class="row justify-content-center">
     <div class="col-md-8">
-        <div class="card shadow border-warning">
+        <div class="card shadow border-warning bg-dark text-white">
             <div class="card-body">
                 <form asp-action="Edit">
+                    <input type="hidden" asp-for="Id" />
                     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
-                    <input type="hidden" asp-for="Id" />
-
                     <div class="form-group mb-3">
-                        <label asp-for="Title" class="control-label">Заглавие на събитието</label>
+                        <label asp-for="Title" class="control-label text-warning fw-bold">Заглавие на събитието</label>
                         <input asp-for="Title" class="form-control" />
                         <span asp-validation-for="Title" class="text-danger"></span>
                     </div>
 
                     <div class="form-group mb-3">
-                        <label asp-for="Description" class="control-label">Описание</label>
+                        <label asp-for="Description" class="control-label text-warning fw-bold">Описание</label>
                         <textarea asp-for="Description" class="form-control" rows="4"></textarea>
                         <span asp-validation-for="Description" class="text-danger"></span>
                     </div>
 
                     <div class="row">
                         <div class="col-md-6 form-group mb-3">
-                            <label asp-for="StartDate" class="control-label">Дата и час</label>
+                            <label asp-for="StartDate" class="control-label text-warning fw-bold">Дата и час</label>
                             <input asp-for="StartDate" class="form-control" type="datetime-local" />
                             <span asp-validation-for="StartDate" class="text-danger"></span>
                         </div>
                         <div class="col-md-6 form-group mb-3">
-                            <label asp-for="ImageUrl" class="control-label">Линк към снимка (URL)</label>
+                            <label asp-for="ImageUrl" class="control-label text-warning fw-bold">Линк към снимка (URL)</label>
                             <input asp-for="ImageUrl" class="form-control" />
                             <span asp-validation-for="ImageUrl" class="text-danger"></span>
                         </div>
@@ -42,14 +41,14 @@
 
                     <div class="row">
                         <div class="col-md-6 form-group mb-3">
-                            <label asp-for="CategoryId" class="control-label">Категория</label>
+                            <label asp-for="CategoryId" class="control-label text-warning fw-bold">Категория</label>
                             <select asp-for="CategoryId" class="form-control" asp-items="ViewBag.Categories">
                                 <option value="">-- Избери категория --</option>
                             </select>
                             <span asp-validation-for="CategoryId" class="text-danger"></span>
                         </div>
                         <div class="col-md-6 form-group mb-3">
-                            <label asp-for="VenueId" class="control-label">Място на провеждане</label>
+                            <label asp-for="VenueId" class="control-label text-warning fw-bold">Място на провеждане</label>
                             <select asp-for="VenueId" class="form-control" asp-items="ViewBag.Venues">
                                 <option value="">-- Избери място --</option>
                             </select>
@@ -58,8 +57,8 @@
                     </div>
 
                     <div class="form-group text-center mt-4">
-                        <input type="submit" value="Запази промените" class="btn btn-warning px-5" />
-                        <a asp-area="" asp-controller="Events" asp-action="Index" class="btn btn-secondary px-4 ms-2">Отказ</a>
+                        <input type="submit" value="Запази промените" class="btn btn-warning px-5 fw-bold" />
+                        <a asp-area="Admin" asp-controller="Events" asp-action="Index" class="btn btn-secondary px-4 ms-2 fw-bold">Отказ</a>
                     </div>
                 </form>
             </div>

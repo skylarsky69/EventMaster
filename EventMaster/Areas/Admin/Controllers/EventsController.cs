@@ -36,6 +36,7 @@ namespace EventMaster.Areas.Admin.Controllers
             {
                 _context.Add(@event);
                 await _context.SaveChangesAsync();
+                // Връщаме те към главната страница след създаване
                 return RedirectToAction("Index", "Events", new { area = "" });
             }
 
@@ -69,7 +70,17 @@ namespace EventMaster.Areas.Admin.Controllers
             {
                 try
                 {
-                    _context.Update(@event);
+                    var existingEvent = await _context.Events.FindAsync(id);
+                    if (existingEvent == null) return NotFound();
+
+                    existingEvent.Title = @event.Title;
+                    existingEvent.Description = @event.Description;
+                    existingEvent.StartDate = @event.StartDate;
+                    existingEvent.ImageUrl = @event.ImageUrl;
+                    existingEvent.CategoryId = @event.CategoryId;
+                    existingEvent.VenueId = @event.VenueId;
+
+                    _context.Update(existingEvent);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
@@ -77,6 +88,7 @@ namespace EventMaster.Areas.Admin.Controllers
                     if (!_context.Events.Any(e => e.Id == @event.Id)) return NotFound();
                     else throw;
                 }
+                // Връщаме те към главната страница след успешно редактиране
                 return RedirectToAction("Index", "Events", new { area = "" });
             }
 
@@ -109,6 +121,7 @@ namespace EventMaster.Areas.Admin.Controllers
                 _context.Events.Remove(@event);
                 await _context.SaveChangesAsync();
             }
+            // Връщаме те към главната страница след изтриване
             return RedirectToAction("Index", "Events", new { area = "" });
         }
     }
