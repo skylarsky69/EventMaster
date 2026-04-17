@@ -10,7 +10,7 @@ namespace EventMaster.Controllers
     {
         private readonly ApplicationDbContext _context;
 
-        // ТРИК: Речник, който пази билетите за всеки отделен потребител (Username -> (EventId, Seats))
+        
         public static Dictionary<string, (int EventId, string Seats)> UserTickets = new();
 
         public TicketsController(ApplicationDbContext context)
@@ -20,15 +20,12 @@ namespace EventMaster.Controllers
 
         public IActionResult MyTickets()
         {
-            // Взимаме името на логнатия потребител
             string username = User.Identity?.Name ?? "Guest";
 
-            // Проверяваме дали ТОЗИ потребител има купен билет
             if (UserTickets.ContainsKey(username))
             {
                 var ticketInfo = UserTickets[username];
 
-                // Взимаме реалното събитие от базата данни
                 var realEvent = _context.Events
                     .Include(e => e.Venue)
                     .Include(e => e.Category)
@@ -39,7 +36,6 @@ namespace EventMaster.Controllers
             }
             else
             {
-                // Ако няма билет, пращаме null
                 ViewBag.Event = null;
             }
 

@@ -133,13 +133,11 @@
         });
 
         function updateSelectedCount() {
-            // ФИКСЪТ: Добавихме .seats-container отпред, за да НЕ брои розовото кръгче от легендата!
             const selectedSeats = document.querySelectorAll('.seats-container .seat.selected');
             const seatsArray = [...selectedSeats].map(seat => seat.getAttribute('data-seat'));
 
             const selectedSeatsCount = selectedSeats.length;
 
-            // ФИКСЪТ: Намаляваме цената на 50% (от 50 на 25 евро)
             const pricePerSeat = 25;
 
             count.innerText = selectedSeatsCount;

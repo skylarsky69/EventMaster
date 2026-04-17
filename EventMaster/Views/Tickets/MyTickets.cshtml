@@ -91,27 +91,25 @@
         });
 
         function downloadPDF() {
-            // Вече снимаме предпазната зона, а не директно билета
+            
             const pdfContainer = document.getElementById('pdf-container');
 
             const opt = {
-                margin:       0, // Маржът вече е вътре в самия HTML
+                margin:       0, 
                 filename:     'EventMaster-Ticket.pdf',
                 image:        { type: 'jpeg', quality: 1 },
                 html2canvas:  {
                     scale: 2,
                     useCORS: true,
-                    scrollY: 0, // Предотвратява бъгове, ако си скролнал надолу
+                    scrollY: 0, 
                     scrollX: 0
                 },
                 jsPDF:        { unit: 'mm', format: 'a4', orientation: 'landscape' }
             };
 
-            // Временно махаме сянката на кутията, за да е чист PDF-ът
             pdfContainer.classList.remove('border', 'shadow-sm');
 
             html2pdf().set(opt).from(pdfContainer).save().then(() => {
-                // Връщаме сянката обратно
                 pdfContainer.classList.add('border', 'shadow-sm');
             });
         }

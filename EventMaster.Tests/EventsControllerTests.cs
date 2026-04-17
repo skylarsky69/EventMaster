@@ -24,22 +24,21 @@ namespace EventMaster.Tests
 
             _context = new ApplicationDbContext(options);
 
-            // 1. Създаваме виртуална Категория и Място
             var testCategory = new Category { Id = 1, Name = "Тест Категория" };
             var testVenue = new Venue { Id = 1, Name = "Тест Зала", Address = "София", Capacity = 100 };
 
             _context.Categories.Add(testCategory);
             _context.Venues.Add(testVenue);
 
-            // 2. Добавяме 8 събития, за да тестваме търсачката и страницирането
+         
             for (int i = 1; i <= 8; i++)
             {
                 _context.Events.Add(new Event
                 {
                     Id = i,
-                    // Четните ще са Рок, нечетните - Джаз
+                    
                     Title = i % 2 == 0 ? $"Рок Концерт {i}" : $"Джаз Вечер {i}",
-                    // Първото събитие ще има специално описание
+                    
                     Description = i == 1 ? "Специално събитие в София" : "Стандартно описание",
                     StartDate = DateTime.Now.AddDays(i),
                     ImageUrl = "test.jpg",
@@ -60,9 +59,6 @@ namespace EventMaster.Tests
             _context.Dispose();
         }
 
-        // ==========================================
-        // ТЕСТОВЕ ЗА DETAILS (Детайли на събитие)
-        // ==========================================
 
         [Fact]
         public async Task Details_ReturnsNotFound_WhenIdIsNull()
@@ -91,35 +87,26 @@ namespace EventMaster.Tests
             Assert.Equal(testEvent.Id, model.Id);
         }
 
-        // ==========================================
-        // ТЕСТОВЕ ЗА INDEX (Търсачка и Странициране)
-        // ==========================================
-
         [Fact]
         public async Task Index_ReturnsCorrectPageSize_WhenNoSearchTermProvided()
         {
-            // Act: Търсим без дума, страница 1
             var result = await _controller.Index(null, 1);
 
-            // Assert
+       
             var viewResult = Assert.IsType<ViewResult>(result);
             var model = Assert.IsAssignableFrom<IEnumerable<Event>>(viewResult.Model);
 
-            // Тъй като имаме 8 събития, а лимитът е 6 на страница, очакваме точно 6
             Assert.Equal(6, model.Count());
 
-            // Проверяваме дали ViewBag данните за страницирането са верни
             Assert.Equal(1, viewResult.ViewData["CurrentPage"]);
-            Assert.Equal(2, viewResult.ViewData["TotalPages"]); // 8 събития / 6 = 2 страници
+            Assert.Equal(2, viewResult.ViewData["TotalPages"]); 
         }
 
         [Fact]
         public async Task Index_ReturnsFilteredEvents_WhenSearchingByTitle()
         {
-            // Act: Търсим думата "Рок" (имаме 4 такива събития - 2, 4, 6, 8)
             var result = await _controller.Index("Рок", 1);
 
-            // Assert
             var viewResult = Assert.IsType<ViewResult>(result);
             var model = Assert.IsAssignableFrom<IEnumerable<Event>>(viewResult.Model);
 
@@ -130,14 +117,14 @@ namespace EventMaster.Tests
         [Fact]
         public async Task Index_ReturnsFilteredEvents_WhenSearchingByDescription()
         {
-            // Act: Търсим думата "Специално" (само първото събитие го има в описанието)
+            
             var result = await _controller.Index("Специално", 1);
 
-            // Assert
+
             var viewResult = Assert.IsType<ViewResult>(result);
             var model = Assert.IsAssignableFrom<IEnumerable<Event>>(viewResult.Model);
 
-            // Трябва да намери точно 1 събитие
+           
             Assert.Single(model);
             Assert.Equal("Джаз Вечер 1", model.First().Title);
         }

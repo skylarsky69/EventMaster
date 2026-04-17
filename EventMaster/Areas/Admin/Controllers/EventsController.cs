@@ -18,7 +18,6 @@ namespace EventMaster.Areas.Admin.Controllers
             _context = context;
         }
 
-        // GET: Admin/Events/Create
         public IActionResult Create()
         {
             ViewBag.Categories = new SelectList(_context.Categories, "Id", "Name");
@@ -45,7 +44,6 @@ namespace EventMaster.Areas.Admin.Controllers
             return View(@event);
         }
 
-        // GET: Admin/Events/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null) return NotFound();
@@ -87,7 +85,6 @@ namespace EventMaster.Areas.Admin.Controllers
             return View(@event);
         }
 
-        // GET: Admin/Events/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null) return NotFound();

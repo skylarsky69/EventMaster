@@ -23,25 +23,24 @@ namespace EventMaster.Tests
         [Fact]
         public void Index_Get_ReturnsViewResult()
         {
-            // Arrange
+           
             var db = GetDatabase();
             var controller = new ContactController(db);
 
-            // Act
+           
             var result = controller.Index();
 
-            // Assert
+      
             Assert.IsType<ViewResult>(result);
         }
 
         [Fact]
         public async Task Index_Post_ValidModel_SavesToDatabaseAndRedirects()
         {
-            // Arrange
+          
             var db = GetDatabase();
             var controller = new ContactController(db);
 
-            // Симулираме TempData, за да не хвърли грешка (NullReferenceException)
             var httpContext = new DefaultHttpContext();
             var tempData = new TempDataDictionary(httpContext, Mock.Of<ITempDataProvider>());
             controller.TempData = tempData;
@@ -54,38 +53,37 @@ namespace EventMaster.Tests
                 Message = "Супер сайт!"
             };
 
-            // Act
+         
             var result = await controller.Index(newMessage);
 
-            // Assert
             Assert.IsType<RedirectToActionResult>(result);
 
-            // Проверяваме дали съобщението е записано в базата данни
+           
             var savedMessage = await db.ContactMessages.FirstOrDefaultAsync(m => m.Name == "Анна");
             Assert.NotNull(savedMessage);
             Assert.Equal("Супер сайт!", savedMessage.Message);
 
-            // Проверяваме дали съобщението за успех е зададено
+          
             Assert.True(controller.TempData.ContainsKey("SuccessMessage"));
         }
 
         [Fact]
         public async Task Index_Post_InvalidModel_ReturnsViewWithModel()
         {
-            // Arrange
+           
             var db = GetDatabase();
             var controller = new ContactController(db);
-            controller.ModelState.AddModelError("Email", "Невалиден имейл"); // Симулираме грешка във формата
+            controller.ModelState.AddModelError("Email", "Невалиден имейл"); 
 
-            var invalidMessage = new ContactMessage { Name = "Анна" }; // Липсват задължителни полета
+            var invalidMessage = new ContactMessage { Name = "Анна" }; 
 
-            // Act
+         
             var result = await controller.Index(invalidMessage);
 
-            // Assert
+          
             var viewResult = Assert.IsType<ViewResult>(result);
             Assert.Equal(invalidMessage, viewResult.Model);
-            // Проверяваме, че нищо не е записано в базата
+           
             Assert.Empty(db.ContactMessages);
         }
     }

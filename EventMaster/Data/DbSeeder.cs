@@ -10,7 +10,6 @@ namespace EventMaster.Data
             var roleManager = serviceProvider.GetRequiredService<RoleManager<IdentityRole>>();
             var userManager = serviceProvider.GetRequiredService<UserManager<ApplicationUser>>();
             var dbContext = serviceProvider.GetRequiredService<ApplicationDbContext>();
-            // 1.5 Създаване на Администраторски акаунт по подразбиране
             var adminEmail = "admin@eventmaster.com";
             var adminUser = await userManager.FindByEmailAsync(adminEmail);
             if (adminUser == null)
@@ -24,14 +23,12 @@ namespace EventMaster.Data
                     EmailConfirmed = true
                 };
 
-                // Паролата ще бъде Admin123!
                 var result = await userManager.CreateAsync(newAdmin, "Admin123!");
                 if (result.Succeeded)
                 {
                     await userManager.AddToRoleAsync(newAdmin, "Administrator");
                 }
             }
-            // 1. Създаване на задължителните роли
             string[] roleNames = { "Administrator", "User" };
             foreach (var roleName in roleNames)
             {
@@ -42,7 +39,6 @@ namespace EventMaster.Data
                 }
             }
 
-            // 2. Добавяне на първоначални категории за събитията (Seeding Data)
             if (!dbContext.Categories.Any())
             {
                 dbContext.Categories.AddRange(
@@ -52,7 +48,6 @@ namespace EventMaster.Data
                     new Category { Name = "Фестивал" },
                     new Category { Name = "Семинар" }
                 );
-                // 3. Добавяне на първоначални Места (Venues)
                 if (!dbContext.Venues.Any())
                 {
                     dbContext.Venues.AddRange(

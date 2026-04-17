@@ -11,13 +11,11 @@ namespace EventMaster
         public static async Task Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
-            // Спираме сървъра да ни логва автоматично със своя системен Windows акаунт
             builder.Services.Configure<IISServerOptions>(options =>
             {
                 options.AutomaticAuthentication = false;
             });
 
-            // Add services to the container.
             var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
             builder.Services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(connectionString));
@@ -31,7 +29,6 @@ namespace EventMaster
 
             var app = builder.Build();
 
-            // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())
             {
                 app.UseMigrationsEndPoint();
@@ -39,12 +36,10 @@ namespace EventMaster
             else
             {
                 app.UseExceptionHandler("/Home/Error");
-                // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
 
-            // ЕТО ТОВА Е МАГИЯТА ЗА 404! 
-            // Вече е ИЗВЪН if-else блока, така че ще работи и докато разработваш!
+           
             app.UseStatusCodePagesWithReExecute("/Home/Error", "?statusCode={0}");
 
             app.UseHttpsRedirection();
@@ -55,7 +50,7 @@ namespace EventMaster
             app.UseAuthentication();
             app.UseAuthorization();
 
-            // Areas маршрути
+            // Areasмаршрути
             app.MapControllerRoute(
                 name: "areas",
                 pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}");
@@ -66,7 +61,7 @@ namespace EventMaster
 
             app.MapRazorPages();
 
-            // --- Seeding Data ---
+            //SeedingData 
             using (var scope = app.Services.CreateScope())
             {
                 var services = scope.ServiceProvider;
@@ -79,7 +74,7 @@ namespace EventMaster
                     Console.WriteLine("Грешка при Seeding: " + ex.Message);
                 }
             }
-            // ---------------------------
+           
 
             app.Run();
         }

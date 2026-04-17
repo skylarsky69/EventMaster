@@ -4,7 +4,6 @@ using Microsoft.EntityFrameworkCore;
 
 namespace EventMaster.Data
 {
-    // Указваме, че използваме нашия къстъм ApplicationUser
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
@@ -12,7 +11,6 @@ namespace EventMaster.Data
         {
         }
 
-        // Това са нашите 6 модела, които ще станат таблици в SQL Server
         public DbSet<Event> Events { get; set; } = null!;
         public DbSet<Category> Categories { get; set; } = null!;
         public DbSet<Venue> Venues { get; set; } = null!;

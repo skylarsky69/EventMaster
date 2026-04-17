@@ -9,7 +9,6 @@ namespace EventMaster.Tests
 {
     public class CategoriesControllerTests
     {
-        // Метод за създаване на временна база в паметта
         private ApplicationDbContext GetDatabase()
         {
             var options = new DbContextOptionsBuilder<ApplicationDbContext>()
@@ -21,7 +20,6 @@ namespace EventMaster.Tests
         [Fact]
         public async Task Index_ReturnsViewWithAllCategories()
         {
-            // Arrange
             var db = GetDatabase();
             db.Categories.Add(new Category { Id = 1, Name = "Театър" });
             db.Categories.Add(new Category { Id = 2, Name = "Кино" });
@@ -29,10 +27,8 @@ namespace EventMaster.Tests
 
             var controller = new CategoriesController(db);
 
-            // Act
             var result = await controller.Index();
 
-            // Assert
             var viewResult = Assert.IsType<ViewResult>(result);
             var model = Assert.IsAssignableFrom<IEnumerable<Category>>(viewResult.ViewData.Model);
             Assert.Equal(2, model.Count());
@@ -41,19 +37,16 @@ namespace EventMaster.Tests
         [Fact]
         public async Task Create_ValidCategory_AddsToDatabaseAndRedirects()
         {
-            // Arrange
             var db = GetDatabase();
             var controller = new CategoriesController(db);
             var newCategory = new Category { Id = 3, Name = "Фестивали" };
 
-            // Act
             var result = await controller.Create(newCategory);
 
-            // Assert
-            // 1. Проверяваме дали пренасочва към Index (което значи успех)
+           
+            
             Assert.IsType<RedirectToActionResult>(result);
 
-            // 2. Проверяваме дали категорията реално е в базата
             var categoryInDb = await db.Categories.FirstOrDefaultAsync(c => c.Name == "Фестивали");
             Assert.NotNull(categoryInDb);
         }
@@ -61,51 +54,49 @@ namespace EventMaster.Tests
         [Fact]
         public async Task Create_InvalidModel_ReturnsViewWithModel()
         {
-            // Arrange
+          
             var db = GetDatabase();
             var controller = new CategoriesController(db);
 
-            // Симулираме грешка във валидацията (напр. празно име)
             controller.ModelState.AddModelError("Name", "Името е задължително");
             var invalidCategory = new Category { Id = 4, Name = "" };
 
-            // Act
+         
             var result = await controller.Create(invalidCategory);
 
-            // Assert
+           
             var viewResult = Assert.IsType<ViewResult>(result);
             Assert.Equal(invalidCategory, viewResult.Model);
-            // Проверяваме, че НЕ е добавено в базата
             Assert.Empty(db.Categories);
         }
         [Fact]
         public async Task Edit_Get_ReturnsNotFound_WhenIdIsNull()
         {
-            // Arrange
+            
             var db = GetDatabase();
             var controller = new CategoriesController(db);
 
-            // Act
+           
             var result = await controller.Edit(null);
 
-            // Assert
+        
             Assert.IsType<NotFoundResult>(result);
         }
 
         [Fact]
         public async Task Edit_Get_ReturnsView_WhenIdIsValid()
         {
-            // Arrange
+        
             var db = GetDatabase();
             db.Categories.Add(new Category { Id = 10, Name = "Изкуство" });
             await db.SaveChangesAsync();
 
             var controller = new CategoriesController(db);
 
-            // Act
+           
             var result = await controller.Edit(10);
 
-            // Assert
+          
             var viewResult = Assert.IsType<ViewResult>(result);
             var model = Assert.IsType<Category>(viewResult.Model);
             Assert.Equal("Изкуство", model.Name);

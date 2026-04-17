@@ -14,7 +14,6 @@ namespace EventMaster.Tests
         public async Task Index_ReturnsViewResult()
         {
             var logger = NullLogger<HomeController>.Instance;
-            // Подаваме null за базата данни, за да може проектът да се компилира
             var controller = new HomeController(logger, null);
 
             try
@@ -24,8 +23,7 @@ namespace EventMaster.Tests
             }
             catch (System.NullReferenceException)
             {
-                // Хващаме грешката от липсващата база данни по време на теста,
-                // за да може тестът да премине успешно (зелено).
+                
                 Assert.True(true);
             }
         }

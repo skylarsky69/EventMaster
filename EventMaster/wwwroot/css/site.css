@@ -13,7 +13,7 @@ body {
     line-height: 1.6;
 }
 
-/* Navbar */
+
 .navbar-custom {
     background-color: var(--ts-dark);
     padding: 20px 0;
@@ -25,7 +25,6 @@ body {
     font-size: 26px;
 }
 
-/* Карти на събитията (Home & List) */
 .ts-card {
     border: none;
     border-radius: 12px;
@@ -62,19 +61,18 @@ body {
     margin-top: 10px;
 }
 
-/* --- Заглавен Банер (Детайли) --- */
 .ts-banner-wrapper {
     position: relative;
     width: 100%;
-    height: 70vh; /* Заема 70% от височината на екрана */
+    height: 70vh; 
     overflow: hidden;
-    margin-top: -1rem; /* Изчиства стандартния маржин от layout-a */
+    margin-top: -1rem; 
 }
 
 .ts-banner-img {
     width: 100%;
     height: 100%;
-    object-fit: cover; /* Снимката запълва пространството без да се разтяга */
+    object-fit: cover; 
     object-position: center;
 }
 
@@ -84,11 +82,11 @@ body {
     left: 0;
     right: 0;
     bottom: 0;
-    /* Плавен тъмен градиент отдолу нагоре за четливост на заглавието */
+   
     background: linear-gradient(to top, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0.3) 50%, transparent 100%);
     display: flex;
-    align-items: flex-end; /* Подрежда заглавието най-отдолу на снимката */
-    padding-bottom: 80px; /* Разстояние за заглавието от дъното */
+    align-items: flex-end; 
+    padding-bottom: 80px; 
     color: white;
 }
 
@@ -97,12 +95,11 @@ body {
     font-weight: 900;
     letter-spacing: -2px;
     text-transform: uppercase;
-    text-shadow: 0 4px 10px rgba(0,0,0,0.5); /* Помага за четливостта */
+    text-shadow: 0 4px 10px rgba(0,0,0,0.5); 
 }
 
-/* --- Плаваща кутия с информация --- */
 .ts-overlap-container {
-    margin-top: -60px; /* "Плава" върху снимката */
+    margin-top: -60px; 
     position: relative;
     z-index: 10;
 }
@@ -153,7 +150,6 @@ body {
         color: white;
     }
 
-/* Таблица с билети */
 .ticket-row {
     border-bottom: 1px solid #eee;
     padding: 20px 0;
@@ -164,10 +160,9 @@ body {
     font-size: 22px;
     color: var(--ts-pink);
 }
-/* Добави това в wwwroot/css/site.css */
 .navbar-custom {
-    background-color: rgba(17, 17, 17, 0.95) !important; /* Леко прозрачно черно */
-    backdrop-filter: blur(10px); /* Модерен ефект на размиване */
+    background-color: rgba(17, 17, 17, 0.95) !important; 
+    backdrop-filter: blur(10px); 
     border-bottom: 2px solid #ff0055;
 }
 
@@ -175,10 +170,10 @@ body {
         color: #ffffff !important;
         font-size: 14px;
         letter-spacing: 1.5px;
-        text-shadow: 0px 2px 4px rgba(0,0,0,0.5); /* Прави текста четлив навсякъде */
+        text-shadow: 0px 2px 4px rgba(0,0,0,0.5); 
     }
 
-/* Снимка на събитието (Banner) */
+
 .main-event-hero {
     width: 100%;
     height: 70vh;
@@ -195,25 +190,21 @@ body {
     width: 100%;
     padding: 40px 0;
 }
-/* Специален стил за хедър на бял фон */
 .text-dark-on-light .navbar-brand {
-    color: #1a1a1a !important; /* Тъмно сив, почти черен текст */
+    color: #1a1a1a !important; 
 }
 
     .text-dark-on-light .navbar-brand span {
-        color: #ff0055 !important; /* Запазваме неоново розовата част на MASTER */
+        color: #ff0055 !important; 
     }
-/* Гарантира, че навигацията и менютата са винаги най-отпред */
 header {
     position: relative;
     z-index: 1040 !important;
 }
-/* Форсираме черния цвят за EVENT в логото */
 .navbar-brand, .footer span.text-dark {
     color: #000000 !important;
 }
 
-/* Форсираме белия текст за главния бутон */
 .btn-ticket {
     color: #ffffff !important;
 }
@@ -221,11 +212,7 @@ header {
     .btn-ticket i {
         color: #ffffff !important;
     }
-/* ==========================================
-   СТИЛОВЕ ЗА IDENTITY (НАСТРОЙКИ НА ПРОФИЛА)
-   ========================================== */
 
-/* Активен таб в лявото меню */
 .nav-pills .nav-link.active,
 .nav-pills .show > .nav-link {
     background-color: #ff0055 !important;
@@ -235,9 +222,8 @@ header {
     box-shadow: 0 4px 10px rgba(255, 0, 85, 0.3);
 }
 
-/* Неактивни табове */
 .nav-pills .nav-link {
-    color: #1a1a1a !important; /* Тъмно сиво/черно */
+    color: #1a1a1a !important; 
     font-weight: 600;
     transition: all 0.3s ease;
 }
@@ -247,7 +233,6 @@ header {
         background-color: #f8f9fa;
     }
 
-/* Оправяне на сините бутони (Save, Update и т.н.) */
 .btn-primary {
     background-color: #ff0055 !important;
     border-color: #ff0055 !important;
@@ -264,7 +249,6 @@ header {
         border-color: #d40047 !important;
         transform: translateY(-2px);
     }
-/* Правим бутоните за отказ по-стилни */
 .btn-outline-secondary {
     border-width: 2px;
     color: #6c757d !important;
@@ -275,7 +259,6 @@ header {
         color: white !important;
     }
 
-/* Стил за главния бутон, за да е винаги с бял текст */
 .btn-ticket {
     color: white !important;
 }
